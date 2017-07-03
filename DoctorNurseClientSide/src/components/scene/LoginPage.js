@@ -3,8 +3,12 @@ import { connect } from 'react-redux';
 import { View, AsyncStorage } from 'react-native';
 import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text } from 'native-base';
 import Dimensions from 'Dimensions';
+import { StackNavigator } from 'react-navigation';
 
 class LoginPage extends Component {
+    static navigationOptions = {
+        header: null
+    };
 
     handleErrors(response) {
     if (!response.ok) {
@@ -33,6 +37,7 @@ class LoginPage extends Component {
 
     onButtonPress(){
         const dispatch = this.props.dispatch;
+        const navigate = this.props.navigation.navigate;
         fetch('http://127.0.0.1:8080/v2/accounts/initiator/login',{
             method: 'POST',
             headers: {
@@ -47,7 +52,14 @@ class LoginPage extends Component {
             .then(response => response.json())
             .then(function (response) {
                 AsyncStorage.setItem("loginToken", response.token)
-                    .then(() => console.log("long term token is saved"))
+                    .then(
+                        dispatch({
+                            type:'loginSuccess'
+                        })
+                    )
+                    .then(
+                        () => navigate('PatientList')
+                    )
             })
             .catch(error => {
                 dispatch({
@@ -57,6 +69,7 @@ class LoginPage extends Component {
     }
 
     render(){
+        console.log(this.props);
         const { containerStyle, logoStyle, buttonStyle, formStyle, errorStyle } = styles;
         return(
             <Container style={containerStyle}>
@@ -130,7 +143,8 @@ const mapStateToProps = state => {
     return {
         username: state.login.username,
         password: state.login.password,
-        error: state.login.error
+        error: state.login.error,
+        isLoggedin: state.login.isLoggedin
     };
 };
 

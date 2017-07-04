@@ -10,7 +10,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state,
                      hasRetrievedList: true,
                      error: null,
-                     patientsList: action.payload.patientsList };
+                     patientsList: action.payload };
         case 'listRetrievalFailed':
             return { ...state,
                      hasRetrievedList: false,

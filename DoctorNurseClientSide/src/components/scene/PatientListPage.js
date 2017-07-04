@@ -21,15 +21,6 @@ class PatientListPage extends Component {
         header: null
     };
 
-    listRetrievalSuccess(patientsList) {
-        this.props.dispatch({
-            type: 'listRetrievalSuccess',
-            payload:{
-                patientsList: patientsList
-            }
-        })
-    }
-
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -43,22 +34,21 @@ class PatientListPage extends Component {
         fetch('http://127.0.0.1:8080/v2/initiator/profile',{
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json',    // AsyncStorage.getItem("loginToken")
                 'Accept' : 'application/json',
-                'Authorization' : 'token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwiaW5zZXJ0aW5nIjp0cnVlLCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGhvbmUiOiJyZXF1aXJlIiwic2FsdCI6InJlcXVpcmUiLCJoYXNoIjoicmVxdWlyZSIsImxhc3RfbmFtZSI6InJlcXVpcmUiLCJmaXJzdF9uYW1lIjoicmVxdWlyZSIsImVtYWlsIjoicmVxdWlyZSIsInVzZXJuYW1lIjoicmVxdWlyZSJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnt9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7InBob25lIjp0cnVlLCJzYWx0Ijp0cnVlLCJoYXNoIjp0cnVlLCJsYXN0X25hbWUiOnRydWUsImZpcnN0X25hbWUiOnRydWUsImVtYWlsIjp0cnVlLCJ1c2VybmFtZSI6dHJ1ZX19LCJzdGF0ZU5hbWVzIjpbInJlcXVpcmUiLCJtb2RpZnkiLCJpbml0IiwiZGVmYXVsdCIsImlnbm9yZSJdfSwicGF0aHNUb1Njb3BlcyI6e30sImVtaXR0ZXIiOnsiZG9tYWluIjpudWxsLCJfZXZlbnRzIjp7fSwiX2V2ZW50c0NvdW50IjowLCJfbWF4TGlzdGVuZXJzIjowfX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJwYXRpZW50cyI6W10sImNyZWF0ZWRfZGF0ZSI6IjIwMTctMDctMDNUMTk6MjQ6NDIuNTIzWiIsInJvbGUiOiJudXJzZSIsInBob25lIjoiNjEyMTIzNjUyMyIsInNhbHQiOiIxNzYxNzI5Mzc2NDAiLCJoYXNoIjoiOWQ2NmUwZTJkMDEyNDRkYWI0NmY4MzBjMGFmNTRiYzk3NjY2NTA0ODdjZjYwM2ZkNzQyZDE0NDUyOWJhMTRjNTcwMzEyNmIxNjY2MGYxZThhOTcwYjZmYTU2MDhkY2ZiYzMwYWM3ZjY4MWY2OWY5ZTM4YzY3MDE4Nzg3ZmMxOGIiLCJlbWFpbCI6IkpvaG4uSm9uZXNAbWFpbC5jb20iLCJsYXN0X25hbWUiOiJKb25lcyIsImZpcnN0X25hbWUiOiJKb2huIiwidXNlcm5hbWUiOiJkb2N0b3IiLCJfaWQiOjMsIl9fdiI6MH0sImlhdCI6MTQ5OTEwOTg4MiwiZXhwIjoxNDk5MTQ1ODgyfQ.cCDFBeMESa4HSiQgFZ_qmxg6RC7fJbLRKbo2mpMZokE'
+                'Authorization' : 'token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwiaW5zZXJ0aW5nIjp0cnVlLCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGhvbmUiOiJyZXF1aXJlIiwic2FsdCI6InJlcXVpcmUiLCJoYXNoIjoicmVxdWlyZSIsImxhc3RfbmFtZSI6InJlcXVpcmUiLCJmaXJzdF9uYW1lIjoicmVxdWlyZSIsImVtYWlsIjoicmVxdWlyZSIsInVzZXJuYW1lIjoicmVxdWlyZSJ9LCJzdGF0ZXMiOnsiaWdub3JlIjp7fSwiZGVmYXVsdCI6e30sImluaXQiOnt9LCJtb2RpZnkiOnt9LCJyZXF1aXJlIjp7InBob25lIjp0cnVlLCJzYWx0Ijp0cnVlLCJoYXNoIjp0cnVlLCJsYXN0X25hbWUiOnRydWUsImZpcnN0X25hbWUiOnRydWUsImVtYWlsIjp0cnVlLCJ1c2VybmFtZSI6dHJ1ZX19LCJzdGF0ZU5hbWVzIjpbInJlcXVpcmUiLCJtb2RpZnkiLCJpbml0IiwiZGVmYXVsdCIsImlnbm9yZSJdfSwicGF0aHNUb1Njb3BlcyI6e30sImVtaXR0ZXIiOnsiZG9tYWluIjpudWxsLCJfZXZlbnRzIjp7fSwiX2V2ZW50c0NvdW50IjowLCJfbWF4TGlzdGVuZXJzIjowfX0sImlzTmV3IjpmYWxzZSwiX2RvYyI6eyJwYXRpZW50cyI6W10sImNyZWF0ZWRfZGF0ZSI6IjIwMTctMDctMDRUMTY6MDU6NDMuOTU2WiIsInJvbGUiOiJudXJzZSIsInBob25lIjoiNjEyMTIzNjUyMyIsInNhbHQiOiIyNDM0MTk2MDk1NzYiLCJoYXNoIjoiMjhhOWQzYzIwN2NiMjkwOTJmNzZiNmU3MmZjNmE4NTAyMzlmMzA1YjE2OWFiNGVlOTBlMDc2YzkyYmFkYWZhOGNmMGQyNDViNjBjOTVlZGVjN2FhMmNhYjBmYzhhZjJjMDcwZWU3N2U2ZGY3NzNkNWQwMmE0NDc3ZGZiYzAzOTEiLCJlbWFpbCI6ImpvaG4uZEBtYWlsLmNvbSIsImxhc3RfbmFtZSI6IkQiLCJmaXJzdF9uYW1lIjoiSm9obiIsInVzZXJuYW1lIjoidGVzdHRlc3QiLCJfaWQiOjYsIl9fdiI6MH0sImlhdCI6MTQ5OTE4NDM0NCwiZXhwIjoxNDk5MjIwMzQ0fQ.vKnjP1jjGTVbwjr0epetOFCiFMY1yLK2gHDSvH8PMGA'
             }
         }).then(this.handleErrors)
-            .then(response => console.log(response))
-            .then(response => response.json())          // this is being returned as undefined and breaking everything and it's very annoying
-            .then(response => console.log(response))
-            //.then(response => response.profile)
-            //.then(response => console.log(response))
-            //.then(response => response.patients)
-            // .then(function (response) {
-            //     this.listRetrievalSuccess(response)
-            // })
-            .catch((response) => {
-                console.log(response);
+            .then(response => response.json())
+            .then(response => response.profile)
+            .then(response => response.patients)
+            .then((response) => {
+                 dispatch({
+                     type: 'listRetrievalSuccess',
+                     payload: response
+                 })
+            })
+            .catch(() => {
                 dispatch({
                     type: "listRetrievalFailed"
                 });
@@ -78,17 +68,16 @@ class PatientListPage extends Component {
 
                 <Content>
                     <Card>
-                        <List button
-                              dataArray={this.props.patientsList}
+                        <List dataArray={this.props.patientsList}
                               renderRow={(item) =>
-                              <ListItem>
+                              <ListItem button onPress={() => this.props.navigation.navigate('PatientDetail')}>
                                   <Text>{item._id}</Text>
                               </ListItem>
                         }>
                         </List>
                     </Card>
 
-                    <Text>{this.props.error}</Text>
+                    <Text style={{color: 'red'}}>{this.props.error}</Text>
 
                     <Button block info onPress={null} title={null} style={buttonStyle}>
                         <Text>

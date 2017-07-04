@@ -1,22 +1,14 @@
 import React, { Component } from 'react';
 import { TouchableOpacity, View, ListView } from 'react-native';
-import { Container, Content, List, ListItem, CheckBox, Body, Button, Text } from 'native-base';
+import { Container, Content, List, ListItem, Body, Button, Text } from 'native-base';
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
-
+import CheckBox from 'react-native-check-box';
 class QuestionSetListPage extends Component {
 
     static navigationOptions = {
         title: 'Select Question Set'
     };
-
-    componentWillMount() {
-        const ds = new ListView.DataSource({
-            rowHasChanged: (r1, r2) => r1 !== r2
-        });
-
-        this.dataSource = ds.cloneWithRows(this.props.questionsetlist);
-    }
 
     onClickQset(qset){
         if(this.props.checkedqsetid.hasOwnProperty(qset._id)){
@@ -55,37 +47,20 @@ class QuestionSetListPage extends Component {
     }
 
     render(){
-        const { buttonStyle } = styles;
-        const test = this.props.checkedqsetid;
-        console.log('i rendered');
+        const { buttonStyle, checkboxStyle } = styles;
         return(
             <Container>
                 <Content>
-                {/*<ListView*/}
-                    {/*dataSource={this.dataSource}*/}
-                    {/*renderRow={(qset) =>{*/}
-                    {/*return(*/}
-                        {/*<ListItem>*/}
-                            {/*<CheckBox*/}
-                                {/*checked={test[qset._id]!=null}*/}
-                                {/*onPress={() => this.onClickQset(qset)}*/}
-                            {/*/>*/}
-                            {/*<Body>*/}
-                              {/*<TouchableOpacity onPress={() => this.onClickQset(qset)}>*/}
-                                  {/*<Text>{qset.title}</Text>*/}
-                              {/*</TouchableOpacity>*/}
-                            {/*</Body>*/}
-                        {/*</ListItem>*/}
-                    {/*)}}*/}
-                {/*>*/}
-                {/*</ListView>*/}
                     <List dataArray={this.props.questionsetlist}
                           renderRow={(qset) => {
                               return(
                                   <ListItem>
-                                      <TouchableOpacity onPress={() => this.onClickQset(qset)}>
-                                          <Text>{qset.title}</Text>
-                                      </TouchableOpacity>
+                                  <CheckBox
+                                      isChecked={this.props.checkedqsetid[qset._id]}
+                                      onClick={() => this.onClickQset(qset)}
+                                      style={checkboxStyle}
+                                  />
+                                  <Text>{qset.title}</Text>
                                   </ListItem>
                               )
                           }}>
@@ -105,6 +80,10 @@ const styles = {
         marginTop: 35,
         width: Dimensions.get('window').width*0.9,
         alignSelf: 'center'
+    },
+
+    checkboxStyle: {
+        paddingRight: 10,
     }
 };
 

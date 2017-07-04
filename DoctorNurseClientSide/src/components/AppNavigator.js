@@ -8,9 +8,9 @@ import QRCodePage from './scene/QRCodePage';
 import QuestionSetListPage from './scene/QuestionSetListPage';
 
 const AppNavigator = StackNavigator({
-    PatientDetail: { screen: PatientDetailPage },
     Login: { screen: LoginPage },
     PatientList: { screen: PatientListPage },
+    PatientDetail: { screen: PatientDetailPage },
     RegisterPhone: { screen: QRCodePage },
     AddQuestionSet: { screen: QuestionSetListPage }
 });

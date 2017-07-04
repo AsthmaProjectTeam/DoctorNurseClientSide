@@ -2,7 +2,8 @@ const INITIAL_STATE = {
     tmptoken: null,
     questionsetlist: null,
     selectedquestionset: [],
-    checkedqsetid: {}
+    checkedqsetid: {},
+    // test: 0
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,6 +23,8 @@ export default (state = INITIAL_STATE, action) => {
                 selectedquestionset: action.payload.selectedquestionset,
                 checkedqsetid: action.payload.checkedqsetid
             };
+        case 'test':
+            return { ...state, questionsetlist: action.payload.questionsetlist };
         default:
             return state;
     }

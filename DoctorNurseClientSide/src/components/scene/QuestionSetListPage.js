@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { TouchableOpacity } from 'react-native';
-import { Container, Content, List, ListItem, Text, CheckBox, Body, Button } from 'native-base';
+import { TouchableOpacity, View, ListView } from 'react-native';
+import { Container, Content, List, ListItem, CheckBox, Body, Button, Text } from 'native-base';
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
 
@@ -10,7 +10,15 @@ class QuestionSetListPage extends Component {
         title: 'Select Question Set'
     };
 
-    onclickqset(qset){
+    componentWillMount() {
+        const ds = new ListView.DataSource({
+            rowHasChanged: (r1, r2) => r1 !== r2
+        });
+
+        this.dataSource = ds.cloneWithRows(this.props.questionsetlist);
+    }
+
+    onClickQset(qset){
         if(this.props.checkedqsetid.hasOwnProperty(qset._id)){
             delete this.props.checkedqsetid[qset._id];
             for(let i = 0; i < this.props.selectedquestionset.length; i++){
@@ -20,8 +28,8 @@ class QuestionSetListPage extends Component {
             this.props.dispatch({
                 type: 'qsetUnselect',
                 payload: {
-                    checkedqsetid: this.props.checkedqsetid,
-                    selectedquestionset: this.props.selectedquestionset
+                    checkedqsetid: {...this.props.checkedqsetid},
+                    selectedquestionset: [...this.props.selectedquestionset]
                 }
             })
         } else {
@@ -30,31 +38,54 @@ class QuestionSetListPage extends Component {
             this.props.dispatch({
                 type: 'qsetSelect',
                 payload: {
-                    checkedqsetid: this.props.checkedqsetid,
-                    selectedquestionset: this.props.selectedquestionset
+                    checkedqsetid: {...this.props.checkedqsetid},
+                    selectedquestionset: [...this.props.selectedquestionset]
                 }
             })
         }
     }
 
-    render(){
-        console.log(this.props.checkedqsetid);
-        console.log(this.props.selectedquestionset);
-        const { buttonStyle } = styles;
+    submitButtonClicked() {
+        this.props.dispatch({
+            type: 'qsetSelect',
+            payload: {
+                checkedqsetid: {6:true},
+            }
+        })
+    }
 
+    render(){
+        const { buttonStyle } = styles;
+        const test = this.props.checkedqsetid;
+        console.log('i rendered');
         return(
             <Container>
                 <Content>
+                {/*<ListView*/}
+                    {/*dataSource={this.dataSource}*/}
+                    {/*renderRow={(qset) =>{*/}
+                    {/*return(*/}
+                        {/*<ListItem>*/}
+                            {/*<CheckBox*/}
+                                {/*checked={test[qset._id]!=null}*/}
+                                {/*onPress={() => this.onClickQset(qset)}*/}
+                            {/*/>*/}
+                            {/*<Body>*/}
+                              {/*<TouchableOpacity onPress={() => this.onClickQset(qset)}>*/}
+                                  {/*<Text>{qset.title}</Text>*/}
+                              {/*</TouchableOpacity>*/}
+                            {/*</Body>*/}
+                        {/*</ListItem>*/}
+                    {/*)}}*/}
+                {/*>*/}
+                {/*</ListView>*/}
                     <List dataArray={this.props.questionsetlist}
                           renderRow={(qset) => {
                               return(
                                   <ListItem>
-                                      <CheckBox checked={this.props.checkedqsetid[qset._id]} onPress={() => this.onclickqset(qset)}/>
-                                      <Body>
-                                          <TouchableOpacity onPress={() => this.onclickqset(qset)}>
-                                              <Text>{qset.title}</Text>
-                                          </TouchableOpacity>
-                                      </Body>
+                                      <TouchableOpacity onPress={() => this.onClickQset(qset)}>
+                                          <Text>{qset.title}</Text>
+                                      </TouchableOpacity>
                                   </ListItem>
                               )
                           }}>

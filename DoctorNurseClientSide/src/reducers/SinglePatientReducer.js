@@ -2,12 +2,10 @@ const INITIAL_STATE = {
     tmptoken: null,
     questionsetlist: null,
     selectedquestionset: [],
-    checkedqsetid: {},
-    // test: 0
+    checkedqsetid: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
-    console.log(action.type);
     switch (action.type){
         case 'tmpToken':
             return { ...state, tmptoken: action.payload.tmptoken };

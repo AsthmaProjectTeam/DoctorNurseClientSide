@@ -57,9 +57,9 @@ class LoginPage extends Component {
                             type:'loginSuccess'
                         })
                     )
-                    .then(() => navigate('PatientList'))
+                    .then(() => navigate('PatientList', {token: response.token}))
             })
-            .catch(error => {
+            .catch(() => {
                 dispatch({
                     type: "loginFail"
                 });

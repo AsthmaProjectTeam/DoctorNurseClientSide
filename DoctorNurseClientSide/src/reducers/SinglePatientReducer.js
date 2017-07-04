@@ -1,9 +1,8 @@
 const INITIAL_STATE = {
     tmptoken: null,
     questionsetlist: null,
-    selectedquestionset: null,
-    qsetchecked: false,
-    checkedqsetid: null
+    selectedquestionset: [],
+    checkedqsetid: {}
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,13 +14,11 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, questionsetlist: action.payload.questionsetlist };
         case 'qsetSelect':
             return { ...state,
-                qsetchecked: action.payload.qsetchecked,
                 selectedquestionset: action.payload.selectedquestionset,
                 checkedqsetid: action.payload.checkedqsetid
             };
         case 'qsetUnselect':
             return { ...state,
-                qsetchecked: action.payload.qsetchecked,
                 selectedquestionset: action.payload.selectedquestionset,
                 checkedqsetid: action.payload.checkedqsetid
             };

@@ -4,41 +4,42 @@ import { Container, Content, List, ListItem, Text, CheckBox, Body, Button } from
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
 
-let selectedquestionset = [];
-let checkedqsetid = {};
 class QuestionSetListPage extends Component {
+
     static navigationOptions = {
         title: 'Select Question Set'
     };
 
     onclickqset(qset){
-        if(checkedqsetid.hasOwnProperty(qset._id)){
-            delete checkedqsetid[qset._id];
-            for(let i of this.props.selectedquestionset){
-                if(qset._id == i._id)
+        if(this.props.checkedqsetid.hasOwnProperty(qset._id)){
+            delete this.props.checkedqsetid[qset._id];
+            for(let i = 0; i < this.props.selectedquestionset.length; i++){
+                if(qset._id == this.props.selectedquestionset[i]._id)
                     this.props.selectedquestionset.splice(i, 1);
             }
             this.props.dispatch({
                 type: 'qsetUnselect',
                 payload: {
-                    checkedqsetid: checkedqsetid,
+                    checkedqsetid: this.props.checkedqsetid,
                     selectedquestionset: this.props.selectedquestionset
                 }
             })
         } else {
-            selectedquestionset.push(qset);
-            checkedqsetid[qset._id] = true;
+            this.props.selectedquestionset.push(qset);
+            this.props.checkedqsetid[qset._id] = true;
             this.props.dispatch({
                 type: 'qsetSelect',
                 payload: {
-                    checkedqsetid: checkedqsetid,
-                    selectedquestionset: selectedquestionset
+                    checkedqsetid: this.props.checkedqsetid,
+                    selectedquestionset: this.props.selectedquestionset
                 }
             })
         }
     }
 
     render(){
+        console.log(this.props.checkedqsetid);
+        console.log(this.props.selectedquestionset);
         const { buttonStyle } = styles;
 
         return(
@@ -48,7 +49,7 @@ class QuestionSetListPage extends Component {
                           renderRow={(qset) => {
                               return(
                                   <ListItem>
-                                      <CheckBox checked={checkedqsetid[qset._id]} onPress={() => this.onclickqset(qset)}/>
+                                      <CheckBox checked={this.props.checkedqsetid[qset._id]} onPress={() => this.onclickqset(qset)}/>
                                       <Body>
                                           <TouchableOpacity onPress={() => this.onclickqset(qset)}>
                                               <Text>{qset.title}</Text>
@@ -80,7 +81,6 @@ const mapStateToProps = state => {
     return {
         questionsetlist: state.singlepatient.questionsetlist,
         selectedquestionset: state.singlepatient.selectedquestionset,
-        qsetchecked: state.singlepatient.qsetchecked,
         checkedqsetid: state.singlepatient.checkedqsetid
     };
 };

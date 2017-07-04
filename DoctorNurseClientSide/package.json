@@ -9,6 +9,7 @@
   "dependencies": {
     "antd-mobile": "^1.2.0",
     "native-base": "^2.2.0",
+    "qrcode": "^0.8.2",
     "react": "16.0.0-alpha.12",
     "react-native": "0.45.1",
     "react-native-router-flux": "^3.40.1",
@@ -21,6 +22,7 @@
     "babel-plugin-import": "^1.2.1",
     "babel-preset-react-native": "2.0.0",
     "jest": "20.0.4",
+    "react-native-qrcode": "^0.2.3",
     "react-test-renderer": "16.0.0-alpha.12"
   },
   "jest": {

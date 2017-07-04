@@ -57,9 +57,7 @@ class LoginPage extends Component {
                             type:'loginSuccess'
                         })
                     )
-                    .then(
-                        () => navigate('PatientList')
-                    )
+                    .then(() => navigate('PatientList'))
             })
             .catch(error => {
                 dispatch({
@@ -69,7 +67,6 @@ class LoginPage extends Component {
     }
 
     render(){
-        console.log(this.props);
         const { containerStyle, logoStyle, buttonStyle, formStyle, errorStyle } = styles;
         return(
             <Container style={containerStyle}>

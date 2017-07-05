@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import { Header,
   Container,
@@ -16,6 +17,7 @@ import { Header,
 from 'native-base';
 import Dimensions from 'Dimensions';
 
+
 class PatientListPage extends Component {
     static navigationOptions = {
         header: null
@@ -29,10 +31,10 @@ class PatientListPage extends Component {
     }
 
     componentWillMount() {
-        const dispatch = this.props.dispatch;
-        const navigate = this.props.navigation.navigate;
         const token = this.props.navigation.state.params.token;
-        fetch('http://127.0.0.1:8080/v2/initiator/profile',{
+        const dispatch = this.props.dispatch;
+
+        fetch('http://127.0.0.1:8080/v2/initiators/profile',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,23 +58,48 @@ class PatientListPage extends Component {
             });
     }
 
+    onLogOutPress() {
+        const dispatch = this.props.dispatch;
+        const navigate = this.props.navigation.navigate;
+        AsyncStorage.setItem("loginToken", "")
+            .then(() => {
+                dispatch({
+                    type: 'logoutSuccess'
+                })
+            })
+            .then(() => {
+                navigate('Login')
+            })
+            //.catch... here will be handle errors function for AsyncStorage calls
+    }
+
     render(){
+        const token = this.props.navigation.state.params.token;
+        const navigate = this.props.navigation.navigate;
         const { containerStyle, buttonStyle } = styles;
 
         return(
             <Container style={containerStyle}>
                 <Header>
+                    <Left>
+                        <Button transparent title={null} onPress={this.onLogOutPress.bind(this)}>
+                            <Text> Log out </Text>
+                        </Button>
+                    </Left>
                     <Body>
                         <Title> Patients </Title>
                     </Body>
+                    <Right>
+                    </Right>
                 </Header>
 
                 <Content>
                     <Card>
                         <List dataArray={this.props.patientsList}
-                              renderRow={(item) =>
-                              <ListItem button onPress={() => this.props.navigation.navigate('PatientDetail')}>
-                                  <Text>{item._id}</Text>
+                              renderRow={(patient) =>
+                              <ListItem button
+                                         onPress={() => navigate('PatientDetail', { patient: patient, doctorToken: token })}>
+                                  <Text>{patient.first_name} {patient.last_name} ... {patient._id}</Text>
                               </ListItem>
                         }>
                         </List>

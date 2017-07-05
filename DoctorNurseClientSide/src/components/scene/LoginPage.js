@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { View, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text } from 'native-base';
 import Dimensions from 'Dimensions';
 import { StackNavigator } from 'react-navigation';
@@ -11,13 +11,13 @@ class LoginPage extends Component {
     };
 
     handleErrors(response) {
-    if (!response.ok) {
-        throw Error(response.statusText);
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
     }
-    return response;
-}
 
-    onChangeUsername(username){
+    onChangeUsername(username) {
         this.props.dispatch({
             type: 'usernameTyped',
             payload:{
@@ -26,7 +26,7 @@ class LoginPage extends Component {
         })
     }
 
-    onChangePassword(password){
+    onChangePassword(password) {
         this.props.dispatch({
             type: 'passwordTyped',
             payload:{
@@ -35,10 +35,10 @@ class LoginPage extends Component {
         })
     }
 
-    onButtonPress(){
+    onButtonPress() {
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
-        fetch('http://127.0.0.1:8080/v2/accounts/initiator/login',{
+        fetch('http://127.0.0.1:8080/v2/accounts/initiators/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -66,7 +66,7 @@ class LoginPage extends Component {
         });
     }
 
-    render(){
+    render() {
         const { containerStyle, logoStyle, buttonStyle, formStyle, errorStyle } = styles;
         return(
             <Container style={containerStyle}>
@@ -96,7 +96,7 @@ class LoginPage extends Component {
                         {this.props.error}
                     </Text>
 
-                    <Button block success style={buttonStyle} onPress={this.onButtonPress.bind(this)}>
+                    <Button block success style={buttonStyle} onPress={this.onButtonPress.bind(this)} title={null}>
                         <Text>Log in</Text>
                     </Button>
                 </Content>

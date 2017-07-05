@@ -1,14 +1,31 @@
 import React, { Component } from 'react';
 import { Image, AsyncStorage } from 'react-native';
-import { Container, Content, Card, CardItem, Thumbnail, Text, Icon, Left, Body, Button } from 'native-base';
+import {
+    Container,
+    Content,
+    Card,
+    CardItem,
+    Thumbnail,
+    Text,
+    Icon,
+    Left,
+    Body,
+    Button
+} from 'native-base';
 import Dimensions from 'Dimensions';
 import { connect } from 'react-redux';
 
+<<<<<<< HEAD
 const doctortoken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGhvbmUiOiJpbml0Iiwic2FsdCI6ImluaXQiLCJoYXNoIjoiaW5pdCIsImxhc3RfbmFtZSI6ImluaXQiLCJmaXJzdF9uYW1lIjoiaW5pdCIsImVtYWlsIjoiaW5pdCIsInVzZXJuYW1lIjoiaW5pdCIsInBhdGllbnRzIjoiaW5pdCIsImNyZWF0ZWRfZGF0ZSI6ImluaXQiLCJyb2xlIjoiaW5pdCIsIl9fdiI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJfX3YiOnRydWUsInBhdGllbnRzIjp0cnVlLCJjcmVhdGVkX2RhdGUiOnRydWUsInJvbGUiOnRydWUsInBob25lIjp0cnVlLCJzYWx0Ijp0cnVlLCJoYXNoIjp0cnVlLCJlbWFpbCI6dHJ1ZSwibGFzdF9uYW1lIjp0cnVlLCJmaXJzdF9uYW1lIjp0cnVlLCJ1c2VybmFtZSI6dHJ1ZSwiX2lkIjp0cnVlfSwibW9kaWZ5Ijp7fSwicmVxdWlyZSI6e319LCJzdGF0ZU5hbWVzIjpbInJlcXVpcmUiLCJtb2RpZnkiLCJpbml0IiwiZGVmYXVsdCIsImlnbm9yZSJdfSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9fSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7InBhdGllbnRzIjpbNTEsNTIsNTMsNTQsNTUsNTYsNTddLCJjcmVhdGVkX2RhdGUiOiIyMDE3LTA2LTI4VDE2OjM2OjU1LjIyMloiLCJyb2xlIjoibnVyc2UiLCJfX3YiOjcsInBob25lIjoiNjEyMTIzNjUyMyIsInNhbHQiOiIxOTEzMDk0ODQ3NjQiLCJoYXNoIjoiZTg3OTg3YWY3NTk1ODIxNTBmNmYxYzE4OWEwOGViOGE1MjQ5OGYwYTY2MjcxYzc2NDY5N2JjNDMxZDk3MmE0YTc5ZWY1MTQzYjMwYTJjYzE5MWFhNjA5MTk2MTFiYmQxMTQ0OWY5ZDEwZjFhMjkyOGUwMTg2MDA2NjFmNDg1YTkiLCJlbWFpbCI6InRlc3RhLlRAbWFpbC5jb20iLCJsYXN0X25hbWUiOiJUIiwiZmlyc3RfbmFtZSI6InRlc3RhIiwidXNlcm5hbWUiOiJ0ZXN0YSIsIl9pZCI6Mn0sIiRpbml0Ijp0cnVlLCJpYXQiOjE0OTkyNjY2NDMsImV4cCI6MTQ5OTI3MDI0M30.ht5xjqE_vHG_Jqx477lsH_FW5Hb_MhYnqxd_sHLjcIw';
+=======
+uriSource = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkXW9pUfeSh43eismrp4OnnSMGmDeoBKbLYEPRjacAmWhpjTMm';
+//const doctortoken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyIkX18iOnsic3RyaWN0TW9kZSI6dHJ1ZSwic2VsZWN0ZWQiOnt9LCJnZXR0ZXJzIjp7fSwid2FzUG9wdWxhdGVkIjpmYWxzZSwiYWN0aXZlUGF0aHMiOnsicGF0aHMiOnsicGhvbmUiOiJpbml0Iiwic2FsdCI6ImluaXQiLCJoYXNoIjoiaW5pdCIsImxhc3RfbmFtZSI6ImluaXQiLCJmaXJzdF9uYW1lIjoiaW5pdCIsImVtYWlsIjoiaW5pdCIsInVzZXJuYW1lIjoiaW5pdCIsInBhdGllbnRzIjoiaW5pdCIsImNyZWF0ZWRfZGF0ZSI6ImluaXQiLCJyb2xlIjoiaW5pdCIsIl9fdiI6ImluaXQiLCJfaWQiOiJpbml0In0sInN0YXRlcyI6eyJpZ25vcmUiOnt9LCJkZWZhdWx0Ijp7fSwiaW5pdCI6eyJfX3YiOnRydWUsInBhdGllbnRzIjp0cnVlLCJjcmVhdGVkX2RhdGUiOnRydWUsInJvbGUiOnRydWUsInBob25lIjp0cnVlLCJzYWx0Ijp0cnVlLCJoYXNoIjp0cnVlLCJlbWFpbCI6dHJ1ZSwibGFzdF9uYW1lIjp0cnVlLCJmaXJzdF9uYW1lIjp0cnVlLCJ1c2VybmFtZSI6dHJ1ZSwiX2lkIjp0cnVlfSwibW9kaWZ5Ijp7fSwicmVxdWlyZSI6e319LCJzdGF0ZU5hbWVzIjpbInJlcXVpcmUiLCJtb2RpZnkiLCJpbml0IiwiZGVmYXVsdCIsImlnbm9yZSJdfSwiZW1pdHRlciI6eyJkb21haW4iOm51bGwsIl9ldmVudHMiOnt9LCJfZXZlbnRzQ291bnQiOjAsIl9tYXhMaXN0ZW5lcnMiOjB9fSwiaXNOZXciOmZhbHNlLCJfZG9jIjp7InBhdGllbnRzIjpbNTEsNTIsNTMsNTQsNTUsNTYsNTddLCJjcmVhdGVkX2RhdGUiOiIyMDE3LTA2LTI4VDE2OjM2OjU1LjIyMloiLCJyb2xlIjoibnVyc2UiLCJfX3YiOjcsInBob25lIjoiNjEyMTIzNjUyMyIsInNhbHQiOiIxOTEzMDk0ODQ3NjQiLCJoYXNoIjoiZTg3OTg3YWY3NTk1ODIxNTBmNmYxYzE4OWEwOGViOGE1MjQ5OGYwYTY2MjcxYzc2NDY5N2JjNDMxZDk3MmE0YTc5ZWY1MTQzYjMwYTJjYzE5MWFhNjA5MTk2MTFiYmQxMTQ0OWY5ZDEwZjFhMjkyOGUwMTg2MDA2NjFmNDg1YTkiLCJlbWFpbCI6InRlc3RhLlRAbWFpbC5jb20iLCJsYXN0X25hbWUiOiJUIiwiZmlyc3RfbmFtZSI6InRlc3RhIiwidXNlcm5hbWUiOiJ0ZXN0YSIsIl9pZCI6Mn0sIiRpbml0Ijp0cnVlLCJpYXQiOjE0OTkxOTQwNDcsImV4cCI6MTQ5OTE5NzY0N30.5Sia-aKWvJxv6spZ30pKdgL1IYzu6rrkcsRX2bK-5Fg';
+>>>>>>> b34943df182c52b318a3a05e7d8204992ae7af02
 class PatientDetailPage extends Component {
-    static navigationOptions = {
-        title: "Patient's Profile"
-    };
+
+    static navigationOptions = ({ navigation }) => ({
+        title: `${navigation.state.params.patient.first_name} ${navigation.state.params.patient.last_name}`
+    });
 
     handleErrors(response) {
         if (!response.ok) {
@@ -19,9 +36,11 @@ class PatientDetailPage extends Component {
 
     getTmpToken(){
         //const token = AsyncStorage.getItem('loginToken');
+        const doctortoken = this.props.navigation.state.params.doctorToken;
+        const id = this.props.navigation.state.params.patient._id;
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
-        fetch('http://127.0.0.1:8080/v2/accounts/patient/register/temp-token', {
+        fetch(`http://127.0.0.1:8080/v2/accounts/patients/${id}/register/temp-token`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -47,6 +66,7 @@ class PatientDetailPage extends Component {
     }
 
     getQuestionSetList(){
+        const doctortoken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
         fetch('http://127.0.0.1:8080/v2/admin/question-set', {
@@ -73,6 +93,8 @@ class PatientDetailPage extends Component {
     }
 
     render() {
+        const patient = this.props.navigation.state.params.patient;
+        const navigate = this.props.navigation.navigate;
         const { cardStyle, listStyle, buttonStyle } = styles;
         return (
             <Container>
@@ -80,12 +102,14 @@ class PatientDetailPage extends Component {
                     <Card style={cardStyle}>
                         <CardItem>
                             <Left>
-                                <Thumbnail source={{uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkXW9pUfeSh43eismrp4OnnSMGmDeoBKbLYEPRjacAmWhpjTMm'}} />
+                                <Thumbnail source={{uri: uriSource}} />
                                 <Body>
-                                <Text>(patient name)</Text>
+                                    {/*<Text>(patient name)</Text>*/}
                                 </Body>
                             </Left>
-                                <Button small block warning style={{marginTop: 10}}>
+                                <Button small block warning style={{marginTop: 10}}
+                                        onPress={() => navigate('EditPatient',
+                                            { uriSource: uriSource, patientInfo: this.props.navigation.state.params.patient })}>
                                     <Text>Edit</Text>
                                 </Button>
                         </CardItem>
@@ -93,8 +117,8 @@ class PatientDetailPage extends Component {
                             {/*<Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/>*/}
                             <Body>
                             <Text style={listStyle}>MRN: 12321312421312412</Text>
-                            <Text style={listStyle}>First Name: Minion</Text>
-                            <Text style={listStyle}>Last Name: Li</Text>
+                            <Text style={listStyle}>First Name: {patient.first_name}</Text>
+                            <Text style={listStyle}>Last Name: {patient.last_name}</Text>
                             <Text style={listStyle}>Date of Birth: 2000/08/08</Text>
                             <Text style={listStyle}>Question Sets:</Text>
                             <Text note style={listStyle}>Question Sets from Dr.Jones</Text>
@@ -102,11 +126,14 @@ class PatientDetailPage extends Component {
                             </Body>
                         </CardItem>
                     </Card>
-                    <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)}>
+                    <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)} title="Register Phone">
                         <Text>Register Phone</Text>
                     </Button>
-                    <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)}>
+                    <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)} title="Add Question Set">
                         <Text>Add Question Set</Text>
+                    </Button>
+                    <Button block warning style={buttonStyle} title="Make Patient Assessment">
+                        <Text>Make Patient Assessment</Text>
                     </Button>
                 </Content>
             </Container>
@@ -128,7 +155,7 @@ const styles = {
     },
 
     buttonStyle: {
-        marginTop: 35,
+        marginTop: 20,
         width: Dimensions.get('window').width*0.9,
         alignSelf: 'center'
     }

@@ -15,6 +15,8 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, error: null, isLoggedin: true };
         case 'loginFail':
             return { ...state, ...INITIAL_STATE, error:'invalid username or password' };
+        case 'logoutSuccess':
+            return { ...INITIAL_STATE };
         default:
             return state;
     }

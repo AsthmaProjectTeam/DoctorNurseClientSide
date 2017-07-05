@@ -7,13 +7,11 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
         case 'listRetrievalSuccess':
-            return { ...state,
-                     hasRetrievedList: true,
+            return { hasRetrievedList: true,
                      error: null,
                      patientsList: action.payload };
         case 'listRetrievalFailed':
-            return { ...state,
-                     hasRetrievedList: false,
+            return { hasRetrievedList: false,
                      error: 'Patient List unavailable',
                      patientsList: [] };
         default:

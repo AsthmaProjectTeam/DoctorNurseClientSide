@@ -31,7 +31,7 @@ class PatientListPage extends Component {
     }
 
     componentWillMount() {
-        const token = this.props.navigation.state.params.token;
+        const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
 
         fetch('http://127.0.0.1:8080/v2/initiators/profile',{
@@ -39,7 +39,7 @@ class PatientListPage extends Component {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept' : 'application/json',
-                'Authorization' : `token ${token}`
+                'Authorization' : `token ${doctorToken}`
             }
         }).then(this.handleErrors)
             .then(response => response.json())
@@ -60,7 +60,6 @@ class PatientListPage extends Component {
 
     onLogOutPress() {
         const dispatch = this.props.dispatch;
-        const navigate = this.props.navigation.navigate;
         AsyncStorage.setItem("loginToken", "")
             .then(() => {
                 dispatch({
@@ -68,13 +67,14 @@ class PatientListPage extends Component {
                 })
             })
             .then(() => {
-                navigate('Login')
+                this.props.navigation.navigate('Login');
+                //this.props.navigation.goBack();  // Improperly handles state and messes up login
             })
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
     render(){
-        const token = this.props.navigation.state.params.token;
+        const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
         const { containerStyle, buttonStyle } = styles;
 
@@ -98,7 +98,7 @@ class PatientListPage extends Component {
                         <List dataArray={this.props.patientsList}
                               renderRow={(patient) =>
                               <ListItem button
-                                         onPress={() => navigate('PatientDetail', { patient: patient, doctorToken: token })}>
+                                         onPress={() => navigate('PatientDetail', { id: patient._id, doctorToken: doctorToken })}>
                                   <Text>{patient.first_name} {patient.last_name} ... {patient._id}</Text>
                               </ListItem>
                         }>

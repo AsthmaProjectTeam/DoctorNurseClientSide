@@ -57,7 +57,7 @@ class LoginPage extends Component {
                             type:'loginSuccess'
                         })
                     )
-                    .then(() => navigate('PatientList', {token: response.token}))
+                    .then(() => navigate('PatientList', {doctorToken: response.token}))
             })
             .catch(() => {
                 dispatch({
@@ -141,7 +141,7 @@ const mapStateToProps = state => {
         username: state.login.username,
         password: state.login.password,
         error: state.login.error,
-        isLoggedin: state.login.isLoggedin
+        isLoggedIn: state.login.isLoggedIn
     };
 };
 

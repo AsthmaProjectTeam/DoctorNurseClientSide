@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-    isLoggedin: false,
+    isLoggedIn: false,
     username: null,
     password: null,
     error: null
@@ -12,9 +12,9 @@ export default (state = INITIAL_STATE, action) => {
         case 'passwordTyped':
             return { ...state, password:action.payload.password };
         case 'loginSuccess':
-            return { ...state, error: null, isLoggedin: true };
+            return { ...INITIAL_STATE, isLoggedIn: true };
         case 'loginFail':
-            return { ...state, ...INITIAL_STATE, error:'invalid username or password' };
+            return { ...INITIAL_STATE, error:'Invalid Username or Password.' };
         case 'logoutSuccess':
             return { ...INITIAL_STATE };
         default:

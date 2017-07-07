@@ -3,14 +3,15 @@ const INITIAL_STATE = {
     questionsetlist: null,
     selectedquestionset: [],
     checkedqsetid: {},
-    patient: null,
-    loading: true
+    patient: { first_name: "",
+               last_name: "",
+               _id: null }
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
         case 'patientProfileLoaded':
-            return { ...state, patient: action.payload, loading: false};
+            return { ...state, patient: action.payload };
         case 'tmpToken':
             return { ...state, tmptoken: action.payload.tmptoken };
         case 'getQuestionSetList':

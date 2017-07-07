@@ -10,7 +10,10 @@ import {
     Icon,
     Left,
     Body,
-    Button
+    Button,
+    Header,
+    Right,
+    Title
 } from 'native-base';
 import Dimensions from 'Dimensions';
 import { connect } from 'react-redux';
@@ -19,10 +22,14 @@ uriSource = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkXW9pUfeSh43
 
 class PatientDetailPage extends Component {
 
+    static navigationOptions = {
+        header: null
+    };
+
     componentWillMount() {
-        const dispatch = this.props.dispatch;
         const id = this.props.navigation.state.params.id;
         const doctorToken = this.props.navigation.state.params.doctorToken;
+        const dispatch = this.props.dispatch;
         fetch('http://127.0.0.1:8080/v2/initiators/profile',{
             method: 'GET',
             headers: {
@@ -47,10 +54,6 @@ class PatientDetailPage extends Component {
             });
     }
 
-    static navigationOptions = {
-        header: null
-    };
-
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -59,9 +62,9 @@ class PatientDetailPage extends Component {
     }
 
     getTmpToken(){
-        const doctorToken = this.props.navigation.state.params.doctorToken;
-        const id = this.props.navigation.state.params.patient._id;
         const dispatch = this.props.dispatch;
+        const id = this.props.navigation.state.params.id;
+        const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
         fetch(`http://127.0.0.1:8080/v2/accounts/patients/${id}/register/temp-token`, {
             method: 'GET',
@@ -88,8 +91,8 @@ class PatientDetailPage extends Component {
     }
 
     getQuestionSetList(){
-        const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
+        const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
         fetch('http://127.0.0.1:8080/v2/admin/question-set', {
             method: 'GET',
@@ -115,77 +118,73 @@ class PatientDetailPage extends Component {
     }
 
     render() {
-        //const patient = this.props.patient;
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
+        const patient = this.props.patient;
         const { cardStyle, listStyle, buttonStyle } = styles;
 
-        if (this.props.loading === false) {
-            const patient = this.props.patient;
-            const loading = this.props.loading;
-            console.log(patient);
-            console.log(loading);
-            return (
-                <Container>
-                    <Content>
-                        <Card style={cardStyle}>
-                            <CardItem>
-                                <Left>
-                                    <Thumbnail source={{uri: uriSource}}/>
-                                    <Body>
-                                    </Body>
-                                </Left>
-                                <Button small block warning style={{marginTop: 10}}
-                                        onPress={() => navigate('EditPatient',
-                                            {
-                                                uriSource: uriSource,
-                                                patientInfo: patient,
-                                                doctorToken: doctorToken
-                                            })}>
-                                    <Text>Edit</Text>
-                                </Button>
-                            </CardItem>
-                            <CardItem>
-                                {/*<Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/>*/}
+        return (
+            <Container>
+                <Content>
+                    <Header>
+                        <Left>
+                            <Button transparent title={null}
+                                    onPress={() => navigate('PatientList',
+                                        {doctorToken: doctorToken})}>
+                                <Icon name='arrow-back' />
+                                <Text>Patients</Text>
+                            </Button>
+                        </Left>
+                        <Body>
+                            <Title>{patient.first_name} {patient.last_name}</Title>
+                        </Body>
+                        <Right>
+                        </Right>
+                    </Header>
+                    <Card style={cardStyle}>
+                        <CardItem>
+                            <Left>
+                                <Thumbnail source={{uri: uriSource}}/>
                                 <Body>
-                                <Text style={listStyle}>MRN: 123123123</Text>
-                                <Text style={listStyle}>First Name: {patient.first_name}</Text>
-                                <Text style={listStyle}>Last Name: {patient.last_name}</Text>
-                                <Text style={listStyle}>Date of Birth: 2000-08-08</Text>
-                                <Text style={listStyle}>Question Sets:</Text>
-                                <Text note style={listStyle}>Question Sets from Dr.Jones</Text>
-                                <Text note style={listStyle}>Question Sets from Dr.Li</Text>
                                 </Body>
-                            </CardItem>
-                        </Card>
-                        <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)}
-                                title="Register Phone">
-                            <Text>Register Phone</Text>
-                        </Button>
-                        <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)}
-                                title="Add Question Set">
-                            <Text>Add Question Set</Text>
-                        </Button>
-                        <Button block warning style={buttonStyle} title="Make Patient Assessment">
-                            <Text>Make Patient Assessment</Text>
-                        </Button>
-                    </Content>
-                </Container>
-            );
-        }
-        else {
-            const loading = this.props.loading;
-            console.log(loading);
-            return(
-                <Container>
-                    <Content>
-                        <Card>
-                            <Text>Loading</Text>
-                        </Card>
-                    </Content>
-                </Container>
-            )
-        }
+                            </Left>
+                            <Button small block warning style={{marginTop: 10}}
+                                    onPress={() => navigate('EditPatient',
+                                        {
+                                            uriSource: uriSource,
+                                            patientInfo: patient,
+                                            doctorToken: doctorToken
+                                        })}>
+                                <Text>Edit</Text>
+                            </Button>
+                        </CardItem>
+                        <CardItem>
+                            {/*<Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/>*/}
+                            <Body>
+                            <Text style={listStyle}>MRN: 123123123</Text>
+                            <Text style={listStyle}>First Name: {patient.first_name}</Text>
+                            <Text style={listStyle}>Last Name: {patient.last_name}</Text>
+                            <Text style={listStyle}>Date of Birth: 2000-08-08</Text>
+                            <Text style={listStyle}>Question Sets:</Text>
+                            <Text note style={listStyle}>Question Sets from Dr.Jones</Text>
+                            <Text note style={listStyle}>Question Sets from Dr.Li</Text>
+                            </Body>
+                        </CardItem>
+                    </Card>
+                    <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)}
+                            title="Register Phone">
+                        <Text>Register Phone</Text>
+                    </Button>
+                    <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)}
+                            title="Add Question Set">
+                        <Text>Add Question Set</Text>
+                    </Button>
+                    <Button block warning style={buttonStyle} title="Make Patient Assessment">
+                        <Text>Make Patient Assessment</Text>
+                    </Button>
+                </Content>
+            </Container>
+        );
     }
 }
 

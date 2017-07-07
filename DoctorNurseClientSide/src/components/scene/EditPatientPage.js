@@ -27,6 +27,18 @@ class EditPatient extends Component {
         header: null
     };
 
+    componentWillMount() {
+        const patientInfo = this.props.navigation.state.params.patientInfo;
+        this.props.dispatch({
+            type: 'componentWillMount',
+            payload: {
+                firstName: patientInfo.first_name,
+                lastName: patientInfo.last_name,
+                dateOfBirth: '2000-08-08'
+            }
+        });
+    }
+
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -56,26 +68,17 @@ class EditPatient extends Component {
     }
 
     onCancelPressed() {
-        patientInfo = this.props.navigation.state.params.patientInfo;
-        uriSource = this.props.navigation.state.params.uriSource;
-        doctorToken = this.props.navigation.state.params.doctorToken;
         this.props.dispatch({
             type: 'cancelPressed'
         });
-        this.props.navigation.navigate('PatientDetail', {
-            uriSource: uriSource,
-            patient: patientInfo,
-            doctortoken: doctorToken
-        });
+        this.navigateToDetail();
     }
 
     onSavePressed() {
         const dispatch = this.props.dispatch;
-        const navigate = this.props.navigation.navigate;
-        uriSource = this.props.navigation.state.params.uriSource;
-        patientInfo = this.props.navigation.state.params.patientInfo;
-        doctorToken = this.props.navigation.state.params.doctorToken;
-        fetch(`http://127.0.0.1:8080/v2/initiators/patients/${patientInfo._id}/profile`,{
+        const id = this.props.navigation.state.params.patientInfo._id;
+        const doctorToken = this.props.navigation.state.params.doctorToken;
+        fetch(`http://127.0.0.1:8080/v2/initiators/patients/${id}/profile`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -90,17 +93,12 @@ class EditPatient extends Component {
             }) // add MRN later when supported by all database API's
         })
             .then(this.handleErrors)
-            .then(response => console.log(response))
             .then(
                 dispatch({
                     type: 'saveSuccess'
                 })
             )
-            .then(() => navigate('PatientDetail', {
-                uriSource: uriSource,
-                patient: patientInfo,
-                doctortoken: doctorToken
-            }))
+            .then(this.navigateToDetail())
             .catch(() => {
                 dispatch({
                     type: 'saveFail'
@@ -108,29 +106,17 @@ class EditPatient extends Component {
             })
     }
 
-    componentWillMount() {
-        patientInfo = this.props.navigation.state.params.patientInfo;
-        this.props.dispatch({
-            type: 'componentWillMount',
-            payload: {
-                firstName: patientInfo.first_name,
-                lastName: patientInfo.last_name,
-                dateOfBirth: '2000-08-08'
-            }
-        });
+    navigateToDetail () {
+        const patientInfo = this.props.navigation.state.params.patientInfo;
+        const doctorToken = this.props.navigation.state.params.doctorToken;
+        this.props.navigation.navigate('PatientDetail', {
+            id: patientInfo._id,
+            doctorToken: doctorToken
+        })
     }
-
-    componentDidMount() {
-        console.log(this.props.firstName,
-            this.props.lastName,
-            this.props.dateOfBirth)
-    }
-
 
     render() {
-
-        patientInfo = this.props.navigation.state.params.patientInfo;
-        uriSource = this.props.navigation.state.params.uriSource;
+        const uriSource = this.props.navigation.state.params.uriSource;
 
         return(
             <Container>
@@ -158,21 +144,21 @@ class EditPatient extends Component {
                                     <Form>
                                         <Item stackedLabel>
                                             <Label>First Name</Label>
-                                            <Input placeholder={patientInfo.first_name}
+                                            <Input placeholder={this.props.firstName}
                                                    autoCorrect={false}
                                                    onChangeText={(text) => this.onFirstNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel last>
                                             <Label>Last Name</Label>
-                                            <Input placeholder={patientInfo.last_name}
+                                            <Input placeholder={this.props.lastName}
                                                    autoCorrect={false}
                                                    onChangeText={(text) => this.onLastNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel last>
                                             <Label>Date of Birth ('YYYY-MM-DD')</Label>
-                                            <Input placeholder="2000-08-08"
+                                            <Input placeholder={this.props.dateOfBirth}
                                                    autoCapitalize='none'
                                                    autoCorrect={false}
                                                    onChangeText={(text) => this.onDoBChanged(text)}

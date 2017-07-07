@@ -19,6 +19,11 @@ import Dimensions from 'Dimensions';
 
 
 class PatientListPage extends Component {
+
+    doctorToken = this.props.navigation.state.params.doctorToken;
+    dispatch = this.props.dispatch;
+    navigate = this.props.navigation.navigate;
+
     static navigationOptions = {
         header: null
     };
@@ -31,51 +36,51 @@ class PatientListPage extends Component {
     }
 
     componentWillMount() {
-        const doctorToken = this.props.navigation.state.params.doctorToken;
-        const dispatch = this.props.dispatch;
+        //const doctorToken = this.props.navigation.state.params.doctorToken;
+        //const dispatch = this.props.dispatch;
 
         fetch('http://127.0.0.1:8080/v2/initiators/profile',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept' : 'application/json',
-                'Authorization' : `token ${doctorToken}`
+                'Authorization' : `token ${this.doctorToken}`
             }
         }).then(this.handleErrors)
             .then(response => response.json())
             .then(response => response.profile)
             .then(response => response.patients)
             .then((response) => {
-                 dispatch({
+                 this.dispatch({
                      type: 'listRetrievalSuccess',
                      payload: response
                  })
             })
             .catch(() => {
-                dispatch({
+                this.dispatch({
                     type: "listRetrievalFailed"
                 });
             });
     }
 
     onLogOutPress() {
-        const dispatch = this.props.dispatch;
+        //const dispatch = this.props.dispatch;
         AsyncStorage.setItem("loginToken", "")
             .then(() => {
-                dispatch({
+                this.dispatch({
                     type: 'logoutSuccess'
                 })
             })
             .then(() => {
-                this.props.navigation.navigate('Login');
+                this.navigate('Login');
                 //this.props.navigation.goBack();  // Improperly handles state and messes up login
             })
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
     render(){
-        const doctorToken = this.props.navigation.state.params.doctorToken;
-        const navigate = this.props.navigation.navigate;
+        //const doctorToken = this.props.navigation.state.params.doctorToken;
+        //const navigate = this.props.navigation.navigate;
         const { containerStyle, buttonStyle } = styles;
 
         return(
@@ -83,6 +88,7 @@ class PatientListPage extends Component {
                 <Header>
                     <Left>
                         <Button transparent title={null} onPress={this.onLogOutPress.bind(this)}>
+                            <Icon name='arrow-back' />
                             <Text> Log out </Text>
                         </Button>
                     </Left>
@@ -98,7 +104,7 @@ class PatientListPage extends Component {
                         <List dataArray={this.props.patientsList}
                               renderRow={(patient) =>
                               <ListItem button
-                                         onPress={() => navigate('PatientDetail', { id: patient._id, doctorToken: doctorToken })}>
+                                         onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
                                   <Text>{patient.first_name} {patient.last_name} ... {patient._id}</Text>
                               </ListItem>
                         }>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, AsyncStorage } from 'react-native';
+import { Image, AsyncStorage, View } from 'react-native';
 import {
     Container,
     Content,
@@ -46,7 +46,9 @@ class PatientDetailPage extends Component {
                 const index = response.findIndex(patient => patient._id === id);
                 dispatch({
                     type: 'patientProfileLoaded',
-                    payload: response[index]
+                    payload: {
+                        patient: response[index]
+                    }
                 });
             })
             .catch(error => {
@@ -91,6 +93,7 @@ class PatientDetailPage extends Component {
     }
 
     getQuestionSetList(){
+        const question_set = this.props.patient.question_set;
         const dispatch = this.props.dispatch;
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
@@ -104,12 +107,21 @@ class PatientDetailPage extends Component {
         }).then(response => response.json())
             .then(response => response.question_set)
             .then(function (response) {
+                if(question_set.length != 0){
+                    let i = 0;
+                    while(i < question_set.length){
+                        if(question_set[i] == response[i]){
+                            response.splice(i, 1);
+                            i++;
+                        }
+                    }
+                }
                 dispatch({
                     type: 'getQuestionSetList',
                     payload: {
                         questionsetlist: response
                     }
-                })
+                });
             })
             .then(() => navigate('AddQuestionSet'))
             .catch(error => {
@@ -121,7 +133,7 @@ class PatientDetailPage extends Component {
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
         const patient = this.props.patient;
-        const { cardStyle, listStyle, buttonStyle } = styles;
+        const { cardStyle, listStyle, buttonStyle, buttonListStyle } = styles;
 
         return (
             <Container>
@@ -171,17 +183,26 @@ class PatientDetailPage extends Component {
                             </Body>
                         </CardItem>
                     </Card>
-                    <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)}
-                            title="Register Phone">
-                        <Text>Register Phone</Text>
-                    </Button>
-                    <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)}
-                            title="Add Question Set">
-                        <Text>Add Question Set</Text>
-                    </Button>
-                    <Button block warning style={buttonStyle} title="Make Patient Assessment">
-                        <Text>Make Patient Assessment</Text>
-                    </Button>
+
+                    <View style={buttonListStyle}>
+                        <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)}
+                                title="Register Phone">
+                            <Text>Register Phone</Text>
+                        </Button>
+                        <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)}
+                                title="Add Question Set">
+                            <Text>Add Question Set</Text>
+                        </Button>
+                    </View>
+
+                    <View style={buttonListStyle}>
+                        <Button block warning style={buttonStyle} title="Make Patient Assessment">
+                            <Text>Make Patient Assessment</Text>
+                        </Button>
+                        <Button block danger style={buttonStyle}>
+                            <Text>Delete Question Set</Text>
+                        </Button>
+                    </View>
                 </Content>
             </Container>
         );
@@ -202,8 +223,13 @@ const styles = {
     },
 
     buttonStyle: {
-        marginTop: 20,
-        width: Dimensions.get('window').width*0.9,
+        margin: 10,
+        width: Dimensions.get('window').width*0.4
+    },
+
+    buttonListStyle: {
+        flexDirection: 'row',
+        padding: 5,
         alignSelf: 'center'
     }
 };

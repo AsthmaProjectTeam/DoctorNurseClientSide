@@ -21,23 +21,11 @@ import {
 } from 'native-base';
 import Dimensions from 'Dimensions';
 
-class EditPatient extends Component {
+class AddPatient extends Component {
 
     static navigationOptions = {
         header: null
     };
-
-    componentWillMount() {
-        const patientInfo = this.props.navigation.state.params.patientInfo;
-        this.props.dispatch({
-            type: 'componentWillMount',
-            payload: {
-                firstName: patientInfo.first_name,
-                lastName: patientInfo.last_name,
-                dateOfBirth: '2000-08-08'
-            }
-        });
-    }
 
     handleErrors(response) {
         if (!response.ok) {
@@ -67,19 +55,18 @@ class EditPatient extends Component {
         })
     }
 
-    onCancelPressed() {
+    onMrnChanged(mrn) {
         this.props.dispatch({
-            type: 'cancelPressed'
-        });
-        this.navigateToDetail();
+            type: 'mrnChanged',
+            payload: mrn
+        })
     }
 
-    onSavePressed() {
-        const dispatch = this.props.dispatch;
-        const id = this.props.navigation.state.params.patientInfo._id;
+    onConfirmPressed() {
         const doctorToken = this.props.navigation.state.params.doctorToken;
-        fetch(`http://127.0.0.1:8080/v2/initiators/patients/${id}/profile`,{
-            method: 'PATCH',
+        const dispatch = this.props.dispatch;
+        fetch("http://127.0.0.1:8080/v2/initiators/patients/new",{
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept' : 'application/json',
@@ -88,17 +75,34 @@ class EditPatient extends Component {
             body: JSON.stringify({
                 'first_name': this.props.firstName,
                 'last_name': this.props.lastName,
-                'mrn': '123123123',
+                'mrn': this.props.mrn,
                 'date_of_birth': this.props.dateOfBirth
-            }) // add MRN later when supported by all database API's
+            })
         })
+            .then(this.handleErrors)
+            .then(response => response.json())
+            .then(response => response.patient)
+            .then(response => response._id)
+            .then((response) => fetch("http://127.0.0.1:8080/v2/initiators/patients/add",{
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept' : 'application/json',
+                    'Authorization': `token ${doctorToken}`
+                },
+                body: JSON.stringify({
+                    'patients_id': [ response ]
+                })
+            }))
             .then(this.handleErrors)
             .then(
                 dispatch({
                     type: 'saveSuccess'
                 })
             )
-            .then(this.navigateToDetail())
+            .then(this.props.navigation.navigate('PatientList', {
+                doctorToken: this.props.navigation.state.params.doctorToken
+            }))
             .catch(() => {
                 dispatch({
                     type: 'saveFail'
@@ -106,19 +110,15 @@ class EditPatient extends Component {
             })
     }
 
-    navigateToDetail () {
-        const patientInfo = this.props.navigation.state.params.patientInfo;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
-        this.props.navigation.navigate('PatientDetail', {
-            id: patientInfo._id,
-            doctorToken: doctorToken
-        })
+    onCancelPressed() {
+        this.props.dispatch({
+            type: 'cancelPressed'
+        });
+        this.props.navigation.navigate('PatientList', { doctorToken: this.props.navigation.state.params.doctorToken })
     }
 
     render() {
-        const uriSource = this.props.navigation.state.params.uriSource;
-
-        return(
+        return (
             <Container>
                 <Header>
                     <Left>
@@ -128,15 +128,13 @@ class EditPatient extends Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>Edit Patient</Title>
+                        <Title>Add Patient</Title>
                     </Body>
                     <Right>
                     </Right>
                 </Header>
 
                 <Content>
-                    <Thumbnail square large style={styles.thumbnailStyle} source={{uri: uriSource}} />
-                    <Text style={styles.errorTextStyle} >{this.props.error}</Text>
                     <Card style={styles.cardStyle}>
                         <CardItem>
                             <Body>
@@ -144,24 +142,26 @@ class EditPatient extends Component {
                                     <Form>
                                         <Item stackedLabel>
                                             <Label>First Name</Label>
-                                            <Input placeholder={this.props.firstName}
-                                                   autoCorrect={false}
+                                            <Input autoCorrect={false}
                                                    onChangeText={(text) => this.onFirstNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel>
                                             <Label>Last Name</Label>
-                                            <Input placeholder={this.props.lastName}
-                                                   autoCorrect={false}
+                                            <Input autoCorrect={false}
                                                    onChangeText={(text) => this.onLastNameChanged(text)}
                                             />
                                         </Item>
-                                        <Item stackedLabel last>
-                                            <Label>Date of Birth ('YYYY-MM-DD')</Label>
-                                            <Input placeholder={this.props.dateOfBirth}
-                                                   autoCapitalize='none'
-                                                   autoCorrect={false}
+                                        <Item stackedLabel>
+                                            <Label>Date of Birth (YYYY-MM-DD)</Label>
+                                            <Input autoCorrect={false}
                                                    onChangeText={(text) => this.onDoBChanged(text)}
+                                            />
+                                        </Item>
+                                        <Item stackedLabel last>
+                                            <Label>MRN</Label>
+                                            <Input autoCorrect={false}
+                                                   onChangeText={(text) => this.onMrnChanged(text)}
                                             />
                                         </Item>
                                     </Form>
@@ -170,8 +170,10 @@ class EditPatient extends Component {
                         </CardItem>
                     </Card>
 
-                    <Button success title={null} onPress={this.onSavePressed.bind(this)} style={styles.buttonStyle} >
-                        <Text style={{ alignSelf: 'center' }}>Save</Text>
+                    <Text style={styles.errorTextStyle}>{this.props.error}</Text>
+
+                    <Button success title={null} onPress={this.onConfirmPressed.bind(this)} style={styles.buttonStyle}>
+                        <Text>Confirm</Text>
                     </Button>
                 </Content>
             </Container>
@@ -192,11 +194,6 @@ const styles = {
         width: Dimensions.get('window').width*0.9,
         alignSelf: 'center'
     },
-    thumbnailStyle: {
-        marginTop: 15,
-        alignSelf: 'center',
-        paddingBottom: 8
-    },
     errorTextStyle: {
         color: 'red',
         alignSelf: 'center',
@@ -206,11 +203,12 @@ const styles = {
 
 const mapStateToProps = state => {
     return {
-        firstName: state.editPatient.firstName,
-        lastName: state.editPatient.lastName,
-        dateOfBirth: state.editPatient.dateOfBirth,
-        error: state.editPatient.error
+        firstName: state.addPatient.firstName,
+        lastName: state.addPatient.lastName,
+        dateOfBirth: state.addPatient.dateOfBirth,
+        error: state.addPatient.error,
+        mrn: state.addPatient.mrn
     };
 };
 
-export default connect(mapStateToProps)(EditPatient);
+export default connect(mapStateToProps)(AddPatient);

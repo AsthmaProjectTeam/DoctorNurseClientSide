@@ -17,6 +17,9 @@ import { Header,
 from 'native-base';
 import Dimensions from 'Dimensions';
 
+// TODO: Must add 'isLoading' to state and create functionality to wait for list to load
+// As of now, newly added patients do not originally render in PatientList
+
 
 class PatientListPage extends Component {
 
@@ -36,9 +39,6 @@ class PatientListPage extends Component {
     }
 
     componentWillMount() {
-        //const doctorToken = this.props.navigation.state.params.doctorToken;
-        //const dispatch = this.props.dispatch;
-
         fetch('http://127.0.0.1:8080/v2/initiators/profile',{
             method: 'GET',
             headers: {
@@ -46,7 +46,8 @@ class PatientListPage extends Component {
                 'Accept' : 'application/json',
                 'Authorization' : `token ${this.doctorToken}`
             }
-        }).then(this.handleErrors)
+        })
+            .then(this.handleErrors)
             .then(response => response.json())
             .then(response => response.profile)
             .then(response => response.patients)
@@ -64,7 +65,6 @@ class PatientListPage extends Component {
     }
 
     onLogOutPress() {
-        //const dispatch = this.props.dispatch;
         AsyncStorage.setItem("loginToken", "")
             .then(() => {
                 this.dispatch({
@@ -79,8 +79,6 @@ class PatientListPage extends Component {
     }
 
     render(){
-        //const doctorToken = this.props.navigation.state.params.doctorToken;
-        //const navigate = this.props.navigation.navigate;
         const { containerStyle, buttonStyle } = styles;
 
         return(
@@ -96,6 +94,9 @@ class PatientListPage extends Component {
                         <Title> Patients </Title>
                     </Body>
                     <Right>
+                        <Button transparent title={null} onPress={() => this.navigate('AddPatient', { doctorToken: this.doctorToken })}>
+                            <Text> Add </Text>
+                        </Button>
                     </Right>
                 </Header>
 
@@ -105,7 +106,7 @@ class PatientListPage extends Component {
                               renderRow={(patient) =>
                               <ListItem button
                                          onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
-                                  <Text>{patient.first_name} {patient.last_name} ... {patient._id}</Text>
+                                  <Text>{patient.first_name} {patient.last_name}</Text>
                               </ListItem>
                         }>
                         </List>
@@ -113,11 +114,6 @@ class PatientListPage extends Component {
 
                     <Text style={{color: 'red'}}>{this.props.error}</Text>
 
-                    <Button block info onPress={null} title={null} style={buttonStyle}>
-                        <Text>
-                            Add Patient
-                        </Text>
-                    </Button>
                 </Content>
             </Container>
         )

@@ -94,6 +94,7 @@ class AddPatient extends Component {
                     'patients_id': [ response ]
                 })
             }))
+            .then((response) => console.log(response))
             .then(this.handleErrors)
             .then(
                 dispatch({
@@ -101,8 +102,9 @@ class AddPatient extends Component {
                 })
             )
             .then(this.props.navigation.navigate('PatientList', {
-                doctorToken: this.props.navigation.state.params.doctorToken
-            }))
+                    doctorToken: this.props.navigation.state.params.doctorToken
+                })
+            )
             .catch(() => {
                 dispatch({
                     type: 'saveFail'

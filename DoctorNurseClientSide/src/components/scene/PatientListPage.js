@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
-import { Header,
-  Container,
-  Text,
-  Content,
-  Button,
-  Left,
-  Body,
-  Right,
-  Icon,
-  Title,
-  Card,
-  List,
-  ListItem }
-from 'native-base';
+import {
+    Header,
+    Container,
+    Text,
+    Content,
+    Button,
+    Left,
+    Body,
+    Right,
+    Icon,
+    Title,
+    Card,
+    List,
+    ListItem,
+    Spinner,
+    Item,
+    Input
+} from 'native-base';
+import SearchBar from 'react-native-searchbar';
 import Dimensions from 'Dimensions';
 
-// TODO: Must add 'isLoading' to state and create functionality to wait for list to load
 // As of now, newly added patients do not originally render in PatientList
-
 
 class PatientListPage extends Component {
 
@@ -39,6 +42,9 @@ class PatientListPage extends Component {
     }
 
     componentWillMount() {
+        this.props.dispatch({
+           type: 'startListRetrieval'
+        });
         fetch('http://127.0.0.1:8080/v2/initiators/profile',{
             method: 'GET',
             headers: {
@@ -73,13 +79,35 @@ class PatientListPage extends Component {
             })
             .then(() => {
                 this.navigate('Login');
-                //this.props.navigation.goBack();  // Improperly handles state and messes up login
             })
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
+    _handleResults(results) {
+        this.dispatch({
+            type: 'handleSearchResults',
+            payload: results
+        });
+    }
+
+    renderContent() {
+        if (this.props.loading) {
+            return (<Spinner color="blue" animating={this.props.loading} hidesWhenStopped={true}/>)
+        }
+        return (<Card>
+            <List dataArray={this.props.patientsList}
+                  renderRow={(patient) =>
+                      <ListItem button
+                                onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
+                          <Text>{patient.first_name} {patient.last_name}</Text>
+                      </ListItem>
+                  }>
+            </List>
+        </Card>)
+    }
+
     render(){
-        const { containerStyle, buttonStyle } = styles;
+        const { containerStyle } = styles;
 
         return(
             <Container style={containerStyle}>
@@ -101,16 +129,29 @@ class PatientListPage extends Component {
                 </Header>
 
                 <Content>
-                    <Card>
-                        <List dataArray={this.props.patientsList}
-                              renderRow={(patient) =>
-                              <ListItem button
-                                         onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
-                                  <Text>{patient.first_name} {patient.last_name}</Text>
-                              </ListItem>
-                        }>
-                        </List>
-                    </Card>
+
+                    <Button title={null} onPress={() => this.searchBar.show()} style={styles.buttonStyle}>
+                        <Text>Search</Text>
+                    </Button>
+
+                    <SearchBar
+                        data={this.props.patientsList}
+                        ref={(ref) => this.searchBar = ref}
+                        autoCapitalize='words'
+                        handleResults={this._handleResults.bind(this)}
+                    />
+
+                    {/*{*/}     // Search bar results handling.... not complete
+                        {/*this.props.searchResults.map((result, i) => {*/}
+                            {/*return (*/}
+                                {/*<Text key={i}>*/}
+                                    {/*{result.first_name} {result.last_name}*/}
+                                {/*</Text>*/}
+                            {/*);*/}
+                        {/*})*/}
+                    {/*}*/}
+
+                    {this.renderContent()}
 
                     <Text style={{color: 'red'}}>{this.props.error}</Text>
 
@@ -134,8 +175,9 @@ const styles = {
 const mapStateToProps = state => {
     return {
         patientsList: state.patients.patientsList,
-        hasRetrievedList: state.patients.hasRetrievedList,
-        error: state.patients.error
+        loading: state.patients.loading,
+        error: state.patients.error,
+        searchResults: state.patients.searchResults
     };
 };
 

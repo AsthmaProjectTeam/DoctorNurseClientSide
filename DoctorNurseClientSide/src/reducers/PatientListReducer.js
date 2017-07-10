@@ -1,19 +1,24 @@
 const INITIAL_STATE = {
     patientsList: [],
-    hasRetrievedList: false,
-    error: null
+    error: null,
+    loading: false,
+    searchResults: []
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
+        case 'startListRetrieval':
+            return { ...state, loading: true };
         case 'listRetrievalSuccess':
-            return { hasRetrievedList: true,
-                     error: null,
-                     patientsList: action.payload };
+            return { error: null,
+                     patientsList: action.payload,
+                     loading: false };
         case 'listRetrievalFailed':
-            return { hasRetrievedList: false,
-                     error: 'Patient List unavailable',
-                     patientsList: [] };
+            return { error: 'Patient List unavailable',
+                     patientsList: [],
+                     loading: false };
+        case 'handleSearchResults':
+            return { ...state, searchResults:action.payload};
         default:
             return state;
     }

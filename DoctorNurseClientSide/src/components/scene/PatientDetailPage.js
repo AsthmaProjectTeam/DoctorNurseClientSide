@@ -138,12 +138,20 @@ class PatientDetailPage extends Component {
             });
     }
 
+    sliceDoB (DoB) {
+        if (typeof DoB === "string") {
+            return DoB.slice(0,10);
+        } else {
+            return DoB;
+        }
+    }
 
     render() {
         const id = this.props.navigation.state.params.id;
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
         const patient = this.props.patient;
+
         const { cardStyle, listStyle, buttonStyle, buttonListStyle } = styles;
 
         return (
@@ -184,10 +192,10 @@ class PatientDetailPage extends Component {
                         <CardItem>
                             {/*<Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/>*/}
                             <Body>
-                            <Text style={listStyle}>MRN: 123123123</Text>
+                            <Text style={listStyle}>MRN: {patient.mrn}</Text>
                             <Text style={listStyle}>First Name: {patient.first_name}</Text>
                             <Text style={listStyle}>Last Name: {patient.last_name}</Text>
-                            <Text style={listStyle}>Date of Birth: 2000-08-08</Text>
+                            <Text style={listStyle}>Date of Birth: {this.sliceDoB(patient.date_of_birth)}</Text>
                             <Text style={listStyle}>Question Sets:</Text>
                             <ScrollView style={{height: 45, marginLeft: 15, marginBottom: 10}}>
                                 {patient.question_set?patient.question_set.map((qset) => {

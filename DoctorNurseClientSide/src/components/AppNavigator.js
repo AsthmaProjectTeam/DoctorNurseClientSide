@@ -20,4 +20,4 @@ const AppNavigator = StackNavigator({
     AddPatient: { screen: AddPatientPage }
 });
 
-export default AppNavigator;
+export default () => (<AppNavigator onNavigationStateChange={null}/>);

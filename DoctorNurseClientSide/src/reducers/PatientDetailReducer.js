@@ -6,17 +6,25 @@ const INITIAL_STATE = {
     patient: { first_name: "",
                last_name: "",
                _id: null,
-               question_set: null}
+               question_set: null},
+    isAdding: false
 };
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
+        case 'getQuestionsetList':
+            return { ...state,
+                questionsetlist: action.payload.questionsetlist,
+                isAdding: action.payload.isAdding
+            };
         case 'patientProfileLoaded':
-            return { ...state, patient: action.payload.patient };
+            return { ...state,
+                patient: action.payload.patient,
+                checkedqsetid: {},
+                selectedquestionset: []
+            };
         case 'tmpToken':
             return { ...state, tmptoken: action.payload.tmptoken };
-        case 'getQuestionSetList':
-            return { ...state, questionsetlist: action.payload.questionsetlist };
         case 'qsetSelect':
             return { ...state,
                 selectedquestionset: action.payload.selectedquestionset,
@@ -27,8 +35,8 @@ export default (state = INITIAL_STATE, action) => {
                 selectedquestionset: action.payload.selectedquestionset,
                 checkedqsetid: action.payload.checkedqsetid
             };
-        case 'test':
-            return { ...state, questionsetlist: action.payload.questionsetlist };
+        case 'updatePatient':
+            return { ...state, patient: action.payload.patient };
         default:
             return state;
     }

@@ -19,7 +19,6 @@ import {
     Item,
     Input
 } from 'native-base';
-import SearchBar from 'react-native-searchbar';
 import Dimensions from 'Dimensions';
 
 // As of now, newly added patients do not originally render in PatientList
@@ -83,13 +82,6 @@ class PatientListPage extends Component {
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
-    _handleResults(results) {
-        this.dispatch({
-            type: 'handleSearchResults',
-            payload: results
-        });
-    }
-
     renderContent() {
         if (this.props.loading) {
             return (<Spinner color="blue" animating={this.props.loading} hidesWhenStopped={true}/>)
@@ -107,7 +99,7 @@ class PatientListPage extends Component {
     }
 
     render(){
-        const { containerStyle } = styles;
+        const { containerStyle, buttonStyle } = styles;
 
         return(
             <Container style={containerStyle}>
@@ -130,26 +122,9 @@ class PatientListPage extends Component {
 
                 <Content>
 
-                    <Button title={null} onPress={() => this.searchBar.show()} style={styles.buttonStyle}>
+                    <Button title={null} onPress={null} style={buttonStyle}>
                         <Text>Search</Text>
                     </Button>
-
-                    <SearchBar
-                        data={this.props.patientsList}
-                        ref={(ref) => this.searchBar = ref}
-                        autoCapitalize='words'
-                        handleResults={this._handleResults.bind(this)}
-                    />
-
-                    {/*{*/}     // Search bar results handling.... not complete
-                        {/*this.props.searchResults.map((result, i) => {*/}
-                            {/*return (*/}
-                                {/*<Text key={i}>*/}
-                                    {/*{result.first_name} {result.last_name}*/}
-                                {/*</Text>*/}
-                            {/*);*/}
-                        {/*})*/}
-                    {/*}*/}
 
                     {this.renderContent()}
 
@@ -176,8 +151,7 @@ const mapStateToProps = state => {
     return {
         patientsList: state.patients.patientsList,
         loading: state.patients.loading,
-        error: state.patients.error,
-        searchResults: state.patients.searchResults
+        error: state.patients.error
     };
 };
 

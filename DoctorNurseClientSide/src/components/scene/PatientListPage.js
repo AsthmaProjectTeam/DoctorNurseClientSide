@@ -21,7 +21,8 @@ import {
 } from 'native-base';
 import Dimensions from 'Dimensions';
 
-// As of now, newly added patients do not originally render in PatientList
+// BUGS: - Newly added patients do not originally render in PatientList
+//       - Search Error is delayed one key-press
 
 class PatientListPage extends Component {
 
@@ -82,53 +83,143 @@ class PatientListPage extends Component {
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
+    cleanString(text) {
+        return text.toUpperCase().replace(/\s/g, '');
+    }
+
+    onSearchInputChanged(search) {
+        const dispatch = this.props.dispatch;
+        const patientsList = this.props.patientsList;
+        dispatch({
+            type: 'searchInputChanged'
+        });
+        for (i = 0; i < patientsList.length; i++) {
+            if (this.cleanString(patientsList[i].first_name).includes(this.cleanString(search)) ||
+                this.cleanString(patientsList[i].last_name).includes(this.cleanString(search)) ||
+                this.cleanString(patientsList[i].first_name +
+                                 patientsList[i].last_name).includes(this.cleanString(search)))
+            {
+                dispatch({
+                    type: 'searchMatched',
+                    payload: patientsList[i]
+                })
+            }
+            else {
+                dispatch({
+                    type: 'searchFailed'
+                })
+            }
+        }
+        if (this.props.searchResults.length !== 0) {
+            dispatch({
+                type: 'forceClearError'
+            });
+        }
+    }
+
+    renderHeader() {
+        if (this.props.userIsSearching) {
+            return (
+                <Header searchBar rounded>
+                    <Item>
+                        <Icon name="ios-search" />
+                        <Input placeholder="Search"
+                               autoCorrect={false}
+                               onChangeText={(text) => this.onSearchInputChanged(text)}/>
+                    </Item>
+                    <Button transparent title={null} onPress={() => this.props.dispatch({
+                        type: 'searchComplete'
+                    })}>
+                        <Text>Cancel</Text>
+                    </Button>
+                </Header>
+            )
+        }
+        return (
+            <Header>
+                <Left>
+                    <Button transparent title={null} onPress={this.onLogOutPress.bind(this)}>
+                        <Icon name='arrow-back' />
+                        <Text> Log out </Text>
+                    </Button>
+                </Left>
+                <Body>
+                <Title> Patients </Title>
+                </Body>
+                <Right>
+                    <Button transparent title={null} onPress={() => this.navigate('AddPatient', { doctorToken: this.doctorToken })}>
+                        <Text> Add </Text>
+                    </Button>
+                </Right>
+            </Header>
+        )
+    }
+
     renderContent() {
         if (this.props.loading) {
             return (<Spinner color="blue" animating={this.props.loading} hidesWhenStopped={true}/>)
         }
-        return (<Card>
-            <List dataArray={this.props.patientsList}
-                  renderRow={(patient) =>
-                      <ListItem button
-                                onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
-                          <Text>{patient.first_name} {patient.last_name}</Text>
-                      </ListItem>
-                  }>
-            </List>
-        </Card>)
+        if (this.props.userIsSearching) {
+            return (
+                <Card>
+                    <List dataArray={this.props.searchResults}
+                          renderRow={(patient) =>
+                              <ListItem button
+                                        onPress={() => {this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken });
+                                                        this.dispatch({ type: 'searchComplete'})}}>
+                                  <Text>{patient.first_name} {patient.last_name}</Text>
+                              </ListItem>
+                          }>
+                    </List>
+                </Card>
+            )
+        }
+        return (
+            <Card>
+                <List dataArray={this.props.patientsList}
+                      renderRow={(patient) =>
+                          <ListItem button
+                                    onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
+                              <Text>{patient.first_name} {patient.last_name}</Text>
+                          </ListItem>
+                      }>
+                </List>
+            </Card>
+        )
     }
 
+    renderSearchButton() {
+        if (this.props.userIsSearching) {
+            return
+        }
+        return (
+            <Button title={null} onPress={() => this.props.dispatch({
+                type: 'searchPressed'
+            })} style={{ backgroundColor: 'darkgray', alignContent: 'center' }} full >
+                <Icon name="ios-search" />
+                <Text>Search</Text>
+            </Button>
+        )
+    }
+
+
     render(){
-        const { containerStyle, buttonStyle } = styles;
+        const { containerStyle } = styles;
 
         return(
             <Container style={containerStyle}>
-                <Header>
-                    <Left>
-                        <Button transparent title={null} onPress={this.onLogOutPress.bind(this)}>
-                            <Icon name='arrow-back' />
-                            <Text> Log out </Text>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title> Patients </Title>
-                    </Body>
-                    <Right>
-                        <Button transparent title={null} onPress={() => this.navigate('AddPatient', { doctorToken: this.doctorToken })}>
-                            <Text> Add </Text>
-                        </Button>
-                    </Right>
-                </Header>
+                {this.renderHeader()}
 
                 <Content>
 
-                    <Button title={null} onPress={null} style={buttonStyle}>
-                        <Text>Search</Text>
-                    </Button>
-
+                    {this.renderSearchButton()}
                     {this.renderContent()}
 
-                    <Text style={{color: 'red'}}>{this.props.error}</Text>
+                    <Text style={{color: 'grey', fontWeight: '400', alignSelf: 'center'}}>
+                        {this.props.searchError}
+                    </Text>
+
+                    <Text style={{color: 'red'}}>{this.props.loadError}</Text>
 
                 </Content>
             </Container>
@@ -151,7 +242,10 @@ const mapStateToProps = state => {
     return {
         patientsList: state.patients.patientsList,
         loading: state.patients.loading,
-        error: state.patients.error
+        loadError: state.patients.loadError,
+        userIsSearching: state.patients.userIsSearching,
+        searchResults: state.patients.searchResults,
+        searchError: state.patients.searchError
     };
 };
 

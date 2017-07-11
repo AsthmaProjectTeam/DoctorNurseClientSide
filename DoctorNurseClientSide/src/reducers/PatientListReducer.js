@@ -2,7 +2,7 @@ const INITIAL_STATE = {
     patientsList: [],
     error: null,
     loading: false,
-    searchResults: []
+    //searchResults: []
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -17,8 +17,8 @@ export default (state = INITIAL_STATE, action) => {
             return { error: 'Patient List unavailable',
                      patientsList: [],
                      loading: false };
-        case 'handleSearchResults':
-            return { ...state, searchResults:action.payload};
+        // case 'handleSearchResults':
+        //     return { ...state, searchResults:action.payload};
         default:
             return state;
     }

@@ -8,6 +8,8 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
+        case 'clearError':
+            return { ...INITIAL_STATE };
         case 'firstNameChanged':
             return { ...state, firstName:action.payload };
         case 'lastNameChanged':

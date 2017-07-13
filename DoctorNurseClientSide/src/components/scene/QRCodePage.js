@@ -61,7 +61,7 @@ const styles = {
 
 const mapStateToProps = state => {
     return {
-        tmptoken: state.login.tmptoken
+        tmptoken: state.singlepatient.tmptoken
     };
 };
 

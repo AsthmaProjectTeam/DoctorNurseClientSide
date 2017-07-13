@@ -10,7 +10,7 @@ import EditPatientPage from './scene/EditPatientPage';
 import AddPatientPage from './scene/AddPatientPage';
 
 const AppNavigator = StackNavigator({
-    //Entrance: { screen: EntrancePage },
+    Entrance: { screen: EntrancePage },
     Login: { screen: LoginPage },
     PatientList: { screen: PatientListPage },
     PatientDetail: { screen: PatientDetailPage },

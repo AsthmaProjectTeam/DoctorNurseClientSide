@@ -60,7 +60,7 @@ class PatientListPage extends Component {
             .then((response) => {
                  this.dispatch({
                      type: 'listRetrievalSuccess',
-                     payload: response
+                     payload: response.reverse()
                  })
             })
             .catch(() => {
@@ -87,6 +87,22 @@ class PatientListPage extends Component {
         return text.toUpperCase().replace(/\s/g, '');
     }
 
+    checkNameLength(text) {
+        if (text.length > 14) {
+            return text.slice(0,10) + '...'
+        } else {
+            return text
+        }
+    }
+
+    sliceDoB (DoB) {
+        if (typeof DoB === "string") {
+            return DoB.slice(0,10);
+        } else {
+            return DoB;
+        }
+    }
+
     onSearchInputChanged(search) {
         const dispatch = this.props.dispatch;
         const patientsList = this.props.patientsList;
@@ -102,18 +118,8 @@ class PatientListPage extends Component {
                 dispatch({
                     type: 'searchMatched',
                     payload: patientsList[i]
-                })
+                });
             }
-            else {
-                dispatch({
-                    type: 'searchFailed'
-                })
-            }
-        }
-        if (this.props.searchResults.length !== 0) {
-            dispatch({
-                type: 'forceClearError'
-            });
         }
     }
 
@@ -123,8 +129,9 @@ class PatientListPage extends Component {
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search"
+                        <Input placeholder="Search Patients"
                                autoCorrect={false}
+                               autoCapitalize='words'
                                onChangeText={(text) => this.onSearchInputChanged(text)}/>
                     </Item>
                     <Button transparent title={null} onPress={() => this.props.dispatch({
@@ -167,7 +174,10 @@ class PatientListPage extends Component {
                               <ListItem button
                                         onPress={() => {this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken });
                                                         this.dispatch({ type: 'searchComplete'})}}>
-                                  <Text>{patient.first_name} {patient.last_name}</Text>
+                                  <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
+                                  <Right>
+                                    <Text>{this.sliceDoB(patient.date_of_birth)}</Text>
+                                  </Right>
                               </ListItem>
                           }>
                     </List>
@@ -180,7 +190,10 @@ class PatientListPage extends Component {
                       renderRow={(patient) =>
                           <ListItem button
                                     onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
-                              <Text>{patient.first_name} {patient.last_name}</Text>
+                              <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
+                              <Right>
+                                <Text>{this.sliceDoB(patient.date_of_birth)}</Text>
+                              </Right>
                           </ListItem>
                       }>
                 </List>

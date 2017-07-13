@@ -27,6 +27,12 @@ class AddPatient extends Component {
         header: null
     };
 
+    componentWillMount () {
+        this.props.dispatch({
+            type: 'clearError'
+        })
+    }
+
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -65,6 +71,7 @@ class AddPatient extends Component {
     onConfirmPressed() {
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
+        const navigate = this.props.navigation.navigate;
         fetch("http://127.0.0.1:8080/v2/initiators/patients/new",{
             method: 'POST',
             headers: {
@@ -94,15 +101,14 @@ class AddPatient extends Component {
                     'patients_id': [ response ]
                 })
             }))
-            .then((response) => console.log(response))
             .then(this.handleErrors)
             .then(
                 dispatch({
                     type: 'saveSuccess'
                 })
             )
-            .then(this.props.navigation.navigate('PatientList', {
-                    doctorToken: this.props.navigation.state.params.doctorToken
+            .then(navigate('PatientList', {
+                    doctorToken: doctorToken
                 })
             )
             .catch(() => {

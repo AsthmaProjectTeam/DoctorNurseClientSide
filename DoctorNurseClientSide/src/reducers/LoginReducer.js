@@ -8,13 +8,13 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch (action.type){
         case 'usernameTyped':
-            return { ...state, username:action.payload.username };
+            return { ...state, username:action.payload.username, error: null };
         case 'passwordTyped':
-            return { ...state, password:action.payload.password };
+            return { ...state, password:action.payload.password, error: null };
         case 'loginSuccess':
             return { ...INITIAL_STATE, isLoggedIn: true };
         case 'loginFail':
-            return { ...INITIAL_STATE, error:'Invalid Username or Password.' };
+            return { ...state, password: null, error:'Invalid Username or Password.' };
         case 'logoutSuccess':
             return { ...INITIAL_STATE };
         default:

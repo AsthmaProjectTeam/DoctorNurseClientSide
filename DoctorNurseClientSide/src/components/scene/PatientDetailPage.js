@@ -20,7 +20,7 @@ import {
 import Dimensions from 'Dimensions';
 import { connect } from 'react-redux';
 
-uriSource = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSkXW9pUfeSh43eismrp4OnnSMGmDeoBKbLYEPRjacAmWhpjTMm';
+uriSource = 'https://d3n8a8pro7vhmx.cloudfront.net/themes/57d734b533893fddfc000001/attachments/original/1473881108/default-profile-pic.jpg?1473881108';
 
 class PatientDetailPage extends Component {
 
@@ -175,11 +175,11 @@ class PatientDetailPage extends Component {
                     <Card style={cardStyle}>
                         <CardItem>
                             <Left>
-                                <Thumbnail source={{uri: uriSource}}/>
+                                <Thumbnail square large source={{uri: uriSource}} style={styles.thumbnailStyle}/>
                                 <Body>
                                 </Body>
                             </Left>
-                            <Button small block warning style={{marginTop: 10}}
+                            <Button block warning style={{marginTop: 10}}
                                     onPress={() => navigate('EditPatient',
                                         {
                                             uriSource: uriSource,
@@ -262,6 +262,11 @@ const styles = {
         flexDirection: 'row',
         padding: 5,
         alignSelf: 'center'
+    },
+
+    thumbnailStyle: {
+        marginTop: 10,
+        marginLeft: 10
     }
 };
 

@@ -23,19 +23,18 @@ export default (state = INITIAL_STATE, action) => {
                      patientsList: [],
                      loading: false };
         case 'searchPressed':
-            return { ...state, userIsSearching: true, searchError: null };
+            return { ...state,
+                     userIsSearching: true,
+                     searchError: null,
+                     searchResults: state.patientsList };
         case 'searchInputChanged':
-            return { ...state, searchResults: [], searchError: null };
+            return { ...state, searchResults: [], searchError: 'No results found' };
         case 'searchMatched':
             return { ...state,
                      searchResults: state.searchResults.concat(action.payload),
                      searchError: null };
         case 'searchComplete':
             return { ...state, userIsSearching: false, searchError: null };
-        case 'searchFailed':
-            return { ...state, searchError: 'No results found' };
-        case 'forceClearError' :
-            return { ...state, searchError: null };
         default:
             return state;
     }

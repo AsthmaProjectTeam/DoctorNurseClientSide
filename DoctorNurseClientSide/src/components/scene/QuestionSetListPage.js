@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, View, ListView } from 'react-native';
+import { View, ListView } from 'react-native';
 import { Container, Content, Body, Button, Text, Header, Left, Icon, Title, Right } from 'native-base';
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
@@ -7,10 +7,10 @@ import CheckBox from 'react-native-check-box';
 class QuestionSetListPage extends Component {
 
     static navigationOptions = {
-        //title: 'Select Quesiton Set'
         header: null
     };
 
+    // Retrieves patients unassigned question lists
     componentWillMount(){
         const questionsetlist = this.props.navigation.state.params.questionsetlist;
         const isAdding = this.props.navigation.state.params.isAdding;
@@ -36,11 +36,12 @@ class QuestionSetListPage extends Component {
         return response;
     }
 
+    // Handles initiator interaction with selecting/un-selecting question sets
     onClickQset(qset){
         if(this.props.checkedqsetid.hasOwnProperty(qset._id)){
             delete this.props.checkedqsetid[qset._id];
             for(let i = 0; i < this.props.selectedquestionset.length; i++){
-                if(qset._id == this.props.selectedquestionset[i]._id)
+                if(qset._id === this.props.selectedquestionset[i]._id)
                     this.props.selectedquestionset.splice(i, 1);
             }
             this.props.dispatch({
@@ -63,6 +64,7 @@ class QuestionSetListPage extends Component {
         }
     }
 
+    // Assigns selected question sets to patient
     addButtonOnClick() {
         const id = this.props.navigation.state.params.id;
         const navigate = this.props.navigation.navigate;
@@ -158,11 +160,11 @@ class QuestionSetListPage extends Component {
                                 doctorToken: doctorToken
                             })}>
                                 <Icon name='arrow-back' />
-                                <Text> back </Text>
+                                <Text> Back </Text>
                             </Button>
                         </Left>
                         <Body>
-                            <Title>Select Quesiton Set</Title>
+                            <Title>Select Q-Sets</Title>
                         </Body>
                         <Right></Right>
                     </Header>
@@ -197,10 +199,16 @@ class QuestionSetListPage extends Component {
                     />
 
                     {this.props.isAdding?
-                        <Button block success style={buttonStyle} onPress={this.addButtonOnClick.bind(this)}>
+                        <Button block
+                                success
+                                style={buttonStyle}
+                                onPress={this.addButtonOnClick.bind(this)}>
                             <Text>Add Selected Question Set(s)</Text>
                         </Button>:
-                        <Button block danger style={buttonStyle} onPress={this.deleteButtonOnClick.bind(this)}>
+                        <Button block
+                                danger
+                                style={buttonStyle}
+                                onPress={this.deleteButtonOnClick.bind(this)}>
                             <Text>Delete Selected Question Set(s)</Text>
                         </Button>
                     }

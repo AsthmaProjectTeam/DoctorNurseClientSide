@@ -11,7 +11,7 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state,
                      firstName: action.payload.firstName,
                      lastName: action.payload.lastName,
-                     dateOfBirth: action.payload.dateOfBirth,
+                     dateOfBirth: action.payload.dateOfBirth
                    };
         case 'firstNameChanged':
             return { ...state, firstName:action.payload };

@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import { AsyncStorage } from 'react-native';
 import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text } from 'native-base';
 import Dimensions from 'Dimensions';
-import { StackNavigator } from 'react-navigation';
+
 
 class LoginPage extends Component {
+    uriSource = 'https://s-media-cache-ak0.pinimg.com/236x/d3/66/78/d36678c183f27a176e8790390f94dcba--ppt-template-templates.jpg';
+
     static navigationOptions = {
         header: null
     };
 
+    // Handles errors for server calls
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -35,6 +38,7 @@ class LoginPage extends Component {
         })
     }
 
+    // Attempts to login initiator
     onButtonPress() {
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
@@ -71,7 +75,9 @@ class LoginPage extends Component {
         return(
             <Container style={containerStyle}>
                 <Content>
-                    <Thumbnail style={logoStyle} square source={{uri:'https://s-media-cache-ak0.pinimg.com/236x/d3/66/78/d36678c183f27a176e8790390f94dcba--ppt-template-templates.jpg'}} />
+                    <Thumbnail style={logoStyle}
+                               square
+                               source={{uri: this.uriSource }} />
 
                     <Form style={formStyle}>
                         <Item floatingLabel>
@@ -96,7 +102,11 @@ class LoginPage extends Component {
                         {this.props.error}
                     </Text>
 
-                    <Button block success style={buttonStyle} onPress={this.onButtonPress.bind(this)} title={null}>
+                    <Button block
+                            success
+                            style={buttonStyle}
+                            onPress={this.onButtonPress.bind(this)}
+                            title={null}>
                         <Text>Log in</Text>
                     </Button>
                 </Content>

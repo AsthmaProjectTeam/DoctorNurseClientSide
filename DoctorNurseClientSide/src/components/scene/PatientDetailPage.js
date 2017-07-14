@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, AsyncStorage, View, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import {
     Container,
     Content,
@@ -28,6 +28,7 @@ class PatientDetailPage extends Component {
         header: null
     };
 
+    // Attempts to gather patient's profile
     componentWillMount() {
         //console.log('patient detail page componentwillmount run');
         const id = this.props.navigation.state.params.id;
@@ -66,6 +67,7 @@ class PatientDetailPage extends Component {
         return response;
     }
 
+    // Produces temporary token for patient registration
     getTmpToken(){
         const dispatch = this.props.dispatch;
         const id = this.props.navigation.state.params.id;
@@ -95,6 +97,7 @@ class PatientDetailPage extends Component {
             });
     }
 
+    // Retrieves patient's currently-assigned question list
     getQuestionSetList(){
         const question_set = this.props.patient.question_set;
         const id = this.props.navigation.state.params.id;
@@ -138,6 +141,7 @@ class PatientDetailPage extends Component {
             });
     }
 
+    // Removes time of day from date of birth timestamp
     sliceDoB (DoB) {
         if (typeof DoB === "string") {
             return DoB.slice(0,10);
@@ -175,11 +179,16 @@ class PatientDetailPage extends Component {
                     <Card style={cardStyle}>
                         <CardItem>
                             <Left>
-                                <Thumbnail square large source={{uri: uriSource}} style={styles.thumbnailStyle}/>
+                                <Thumbnail square
+                                           large
+                                           source={{uri: uriSource}}
+                                           style={styles.thumbnailStyle}/>
                                 <Body>
                                 </Body>
                             </Left>
-                            <Button block warning style={{marginTop: 10}}
+                            <Button block
+                                    warning
+                                    style={{marginTop: 10}}
                                     onPress={() => navigate('EditPatient',
                                         {
                                             uriSource: uriSource,
@@ -190,37 +199,50 @@ class PatientDetailPage extends Component {
                             </Button>
                         </CardItem>
                         <CardItem>
-                            {/*<Image source={{uri: 'Image URL'}} style={{height: 200, width: 200, flex: 1}}/>*/}
                             <Body>
-                            <Text style={listStyle}>MRN: {patient.mrn}</Text>
-                            <Text style={listStyle}>First Name: {patient.first_name}</Text>
-                            <Text style={listStyle}>Last Name: {patient.last_name}</Text>
-                            <Text style={listStyle}>Date of Birth: {this.sliceDoB(patient.date_of_birth)}</Text>
-                            <Text style={listStyle}>Question Sets:</Text>
-                            <ScrollView style={{height: 45, marginLeft: 15, marginBottom: 10}}>
-                                {patient.question_set?patient.question_set.map((qset) => {
-                                        return(
-                                            <Text note key={patient.question_set.indexOf(qset)}>{qset.title}</Text>
-                                        )
-                                    }):<Text note>This patient has no question set</Text>}
-                            </ScrollView>
+                                <Text style={listStyle}>MRN: {patient.mrn}</Text>
+                                <Text style={listStyle}>First Name: {patient.first_name}</Text>
+                                <Text style={listStyle}>Last Name: {patient.last_name}</Text>
+                                <Text style={listStyle}>Date of Birth: {this.sliceDoB(patient.date_of_birth)}</Text>
+                                <Text style={listStyle}>Question Sets:</Text>
+                                <ScrollView style={{height: 45, marginLeft: 15, marginBottom: 10}}>
+                                    {patient.question_set?patient.question_set.map((qset) => {
+                                            return(
+                                                <Text note
+                                                      key={patient.question_set.indexOf(qset)}>
+                                                    {qset.title}
+                                                </Text>
+                                            )
+                                        }):<Text note>
+                                                This patient has no question set
+                                           </Text>}
+                                </ScrollView>
                             </Body>
                         </CardItem>
                     </Card>
 
                     <View style={buttonListStyle}>
-                        <Button block info style={buttonStyle} onPress={this.getTmpToken.bind(this)}
+                        <Button block
+                                info
+                                style={buttonStyle}
+                                onPress={this.getTmpToken.bind(this)}
                                 title="Register Phone">
                             <Text>Register Phone</Text>
                         </Button>
-                        <Button block success style={buttonStyle} onPress={this.getQuestionSetList.bind(this)}
+                        <Button block
+                                success
+                                style={buttonStyle}
+                                onPress={this.getQuestionSetList.bind(this)}
                                 title="Add Question Set">
                             <Text>Add Question Set</Text>
                         </Button>
                     </View>
 
                     <View style={buttonListStyle}>
-                        <Button block warning style={buttonStyle} title="Make Patient Assessment">
+                        <Button block
+                                warning
+                                style={buttonStyle}
+                                title="Make Patient Assessment">
                             <Text>Make Patient Assessment</Text>
                         </Button>
                         <Button block danger style={buttonStyle} onPress={() =>

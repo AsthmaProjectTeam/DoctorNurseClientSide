@@ -27,12 +27,14 @@ class AddPatient extends Component {
         header: null
     };
 
+    // Fixes bug: error is displayed when returning to 'AddPatientPage'
     componentWillMount () {
         this.props.dispatch({
             type: 'clearError'
         })
     }
 
+    // Handles server call errors
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -68,6 +70,7 @@ class AddPatient extends Component {
         })
     }
 
+    // Attempts to add patient to database AND to initiator's profile
     onConfirmPressed() {
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
@@ -118,11 +121,13 @@ class AddPatient extends Component {
             })
     }
 
+    // Returns to PatientList page... No other action
     onCancelPressed() {
         this.props.dispatch({
             type: 'cancelPressed'
         });
-        this.props.navigation.navigate('PatientList', { doctorToken: this.props.navigation.state.params.doctorToken })
+        this.props.navigation.navigate('PatientList',
+            { doctorToken:this.props.navigation.state.params.doctorToken })
     }
 
     render() {
@@ -130,7 +135,8 @@ class AddPatient extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent title={null} onPress={this.onCancelPressed.bind(this)}>
+                        <Button transparent title={null}
+                                onPress={this.onCancelPressed.bind(this)}>
                             <Icon name='arrow-back' />
                             <Text>Cancel</Text>
                         </Button>
@@ -151,25 +157,29 @@ class AddPatient extends Component {
                                         <Item stackedLabel>
                                             <Label>First Name</Label>
                                             <Input autoCorrect={false}
-                                                   onChangeText={(text) => this.onFirstNameChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onFirstNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel>
                                             <Label>Last Name</Label>
                                             <Input autoCorrect={false}
-                                                   onChangeText={(text) => this.onLastNameChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onLastNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel>
                                             <Label>Date of Birth (YYYY-MM-DD)</Label>
                                             <Input autoCorrect={false}
-                                                   onChangeText={(text) => this.onDoBChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onDoBChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel last>
                                             <Label>MRN</Label>
                                             <Input autoCorrect={false}
-                                                   onChangeText={(text) => this.onMrnChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onMrnChanged(text)}
                                             />
                                         </Item>
                                     </Form>
@@ -180,7 +190,9 @@ class AddPatient extends Component {
 
                     <Text style={styles.errorTextStyle}>{this.props.error}</Text>
 
-                    <Button success title={null} onPress={this.onConfirmPressed.bind(this)} style={styles.buttonStyle}>
+                    <Button success title={null}
+                            onPress={this.onConfirmPressed.bind(this)}
+                            style={styles.buttonStyle}>
                         <Text>Confirm</Text>
                     </Button>
                 </Content>

@@ -22,11 +22,11 @@ import {
 import Dimensions from 'Dimensions';
 
 // BUGS: - Newly added patients do not originally render in PatientList
-//       - Search Error is delayed one key-press
 
 class PatientListPage extends Component {
 
-    doctorToken = this.props.navigation.state.params.doctorToken;
+    // Component constants
+    doctorToken = this.props.navigation.state.params.doctorToken; // long-term initiator token
     dispatch = this.props.dispatch;
     navigate = this.props.navigation.navigate;
 
@@ -34,6 +34,7 @@ class PatientListPage extends Component {
         header: null
     };
 
+    // Handles errors with server fetch calls
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -41,8 +42,9 @@ class PatientListPage extends Component {
         return response;
     }
 
+    // Retrieve initiator's patient list using stored long-term token
     componentWillMount() {
-        this.props.dispatch({
+        this.dispatch({
            type: 'startListRetrieval'
         });
         fetch('http://127.0.0.1:8080/v2/initiators/profile',{
@@ -70,6 +72,7 @@ class PatientListPage extends Component {
             });
     }
 
+    // Log Out initiator and wipe stored long-term token
     onLogOutPress() {
         AsyncStorage.setItem("loginToken", "")
             .then(() => {
@@ -83,10 +86,12 @@ class PatientListPage extends Component {
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
+    // Removes whitespace from strings
     cleanString(text) {
         return text.toUpperCase().replace(/\s/g, '');
     }
 
+    // Truncates strings too long for display
     checkNameLength(text) {
         if (text.length > 14) {
             return text.slice(0,10) + '...'
@@ -95,6 +100,7 @@ class PatientListPage extends Component {
         }
     }
 
+    // Removes time of day from date of birth timestamp
     sliceDoB (DoB) {
         if (typeof DoB === "string") {
             return DoB.slice(0,10);
@@ -103,19 +109,21 @@ class PatientListPage extends Component {
         }
     }
 
+    // Used to handle search input and assembling search results in state
     onSearchInputChanged(search) {
-        const dispatch = this.props.dispatch;
         const patientsList = this.props.patientsList;
-        dispatch({
+        const cleanString = this.cleanString;
+        this.dispatch({
             type: 'searchInputChanged'
         });
         for (i = 0; i < patientsList.length; i++) {
-            if (this.cleanString(patientsList[i].first_name).includes(this.cleanString(search)) ||
-                this.cleanString(patientsList[i].last_name).includes(this.cleanString(search)) ||
-                this.cleanString(patientsList[i].first_name +
-                                 patientsList[i].last_name).includes(this.cleanString(search)))
+            const firstName = cleanString(patientsList[i].first_name);
+            const lastName = cleanString(patientsList[i].last_name);
+            if (firstName.includes(cleanString(search)) ||
+                lastName.includes(cleanString(search)) ||
+                (firstName+lastName).includes(cleanString(search)))
             {
-                dispatch({
+                this.dispatch({
                     type: 'searchMatched',
                     payload: patientsList[i]
                 });
@@ -123,8 +131,9 @@ class PatientListPage extends Component {
         }
     }
 
+    // Renders component's header based on whether user is searching
     renderHeader() {
-        if (this.props.userIsSearching) {
+        if (this.props.userIsSearching) {      // user is searching.. display search bar
             return (
                 <Header searchBar rounded>
                     <Item>
@@ -142,10 +151,11 @@ class PatientListPage extends Component {
                 </Header>
             )
         }
-        return (
+        return (          // user is not searching... display default header
             <Header>
                 <Left>
-                    <Button transparent title={null} onPress={this.onLogOutPress.bind(this)}>
+                    <Button transparent title={null}
+                            onPress={this.onLogOutPress.bind(this)}>
                         <Icon name='arrow-back' />
                         <Text> Log out </Text>
                     </Button>
@@ -154,7 +164,9 @@ class PatientListPage extends Component {
                 <Title> Patients </Title>
                 </Body>
                 <Right>
-                    <Button transparent title={null} onPress={() => this.navigate('AddPatient', { doctorToken: this.doctorToken })}>
+                    <Button transparent title={null}
+                            onPress={() => this.navigate(
+                                'AddPatient', { doctorToken: this.doctorToken })}>
                         <Text> Add </Text>
                     </Button>
                 </Right>
@@ -162,17 +174,23 @@ class PatientListPage extends Component {
         )
     }
 
+    // Renders spinner, full patient list, or search results based upon whether user is searching or
+    // patient list is being loaded
     renderContent() {
-        if (this.props.loading) {
-            return (<Spinner color="blue" animating={this.props.loading} hidesWhenStopped={true}/>)
+        if (this.props.loading) {     // patient list fetch in progress... waiting to display patient list
+            return (<Spinner color="blue"
+                             animating={this.props.loading}
+                             hidesWhenStopped={true}/>)
         }
-        if (this.props.userIsSearching) {
+        if (this.props.userIsSearching) {  // Renders patients that match search
             return (
                 <Card>
                     <List dataArray={this.props.searchResults}
                           renderRow={(patient) =>
                               <ListItem button
-                                        onPress={() => {this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken });
+                                        onPress={() =>
+                                        {this.navigate('PatientDetail', { id: patient._id,
+                                                        doctorToken: this.doctorToken });
                                                         this.dispatch({ type: 'searchComplete'})}}>
                                   <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
                                   <Right>
@@ -184,12 +202,13 @@ class PatientListPage extends Component {
                 </Card>
             )
         }
-        return (
+        return (  // Renders all patients under initiator
             <Card>
                 <List dataArray={this.props.patientsList}
                       renderRow={(patient) =>
                           <ListItem button
-                                    onPress={() => this.navigate('PatientDetail', { id: patient._id, doctorToken: this.doctorToken })}>
+                                    onPress={() => this.navigate('PatientDetail',
+                                        { id: patient._id, doctorToken: this.doctorToken })}>
                               <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
                               <Right>
                                 <Text>{this.sliceDoB(patient.date_of_birth)}</Text>
@@ -201,6 +220,7 @@ class PatientListPage extends Component {
         )
     }
 
+    // Shows search bar if user is not currently searching
     renderSearchButton() {
         if (this.props.userIsSearching) {
             return

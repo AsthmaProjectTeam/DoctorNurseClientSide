@@ -27,6 +27,7 @@ class EditPatient extends Component {
         header: null
     };
 
+    // Fetches patient's current info to act as placeholders
     componentWillMount() {
         const patientInfo = this.props.navigation.state.params.patientInfo;
         this.props.dispatch({
@@ -34,11 +35,12 @@ class EditPatient extends Component {
             payload: {
                 firstName: patientInfo.first_name,
                 lastName: patientInfo.last_name,
-                dateOfBirth: '2000-08-08'
+                dateOfBirth: patientInfo.date_of_birth
             }
         });
     }
 
+    // handles server call errors
     handleErrors(response) {
         if (!response.ok) {
             throw Error(response.statusText);
@@ -74,6 +76,7 @@ class EditPatient extends Component {
         this.navigateToDetail();
     }
 
+    // Attempts to update patient's profile according to initiator input
     onSavePressed() {
         const dispatch = this.props.dispatch;
         const id = this.props.navigation.state.params.patientInfo._id;
@@ -88,9 +91,9 @@ class EditPatient extends Component {
             body: JSON.stringify({
                 'first_name': this.props.firstName,
                 'last_name': this.props.lastName,
-                'mrn': '123123123',
+                'mrn': this.props.navigation.state.params.patientInfo.mrn,
                 'date_of_birth': this.props.dateOfBirth
-            }) // add MRN later when supported by all database API's
+            })
         })
             .then(this.handleErrors)
             .then(
@@ -122,7 +125,8 @@ class EditPatient extends Component {
             <Container>
                 <Header>
                     <Left>
-                        <Button transparent title={null} onPress={this.onCancelPressed.bind(this)}>
+                        <Button transparent title={null}
+                                onPress={this.onCancelPressed.bind(this)}>
                             <Icon name='arrow-back' />
                             <Text>Cancel</Text>
                         </Button>
@@ -146,14 +150,16 @@ class EditPatient extends Component {
                                             <Label>First Name</Label>
                                             <Input placeholder={this.props.firstName}
                                                    autoCorrect={false}
-                                                   onChangeText={(text) => this.onFirstNameChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onFirstNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel>
                                             <Label>Last Name</Label>
                                             <Input placeholder={this.props.lastName}
                                                    autoCorrect={false}
-                                                   onChangeText={(text) => this.onLastNameChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onLastNameChanged(text)}
                                             />
                                         </Item>
                                         <Item stackedLabel last>
@@ -161,7 +167,8 @@ class EditPatient extends Component {
                                             <Input placeholder={this.props.dateOfBirth}
                                                    autoCapitalize='none'
                                                    autoCorrect={false}
-                                                   onChangeText={(text) => this.onDoBChanged(text)}
+                                                   onChangeText={(text) =>
+                                                       this.onDoBChanged(text)}
                                             />
                                         </Item>
                                     </Form>
@@ -170,7 +177,10 @@ class EditPatient extends Component {
                         </CardItem>
                     </Card>
 
-                    <Button success title={null} onPress={this.onSavePressed.bind(this)} style={styles.buttonStyle} >
+                    <Button success
+                            title={null}
+                            onPress={this.onSavePressed.bind(this)}
+                            style={styles.buttonStyle} >
                         <Text style={{ alignSelf: 'center' }}>Save</Text>
                     </Button>
                 </Content>

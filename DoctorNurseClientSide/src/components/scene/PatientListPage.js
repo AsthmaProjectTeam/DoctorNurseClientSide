@@ -157,17 +157,17 @@ class PatientListPage extends Component {
                     <Button transparent title={null}
                             onPress={this.onLogOutPress.bind(this)}>
                         <Icon name='arrow-back' />
-                        <Text> Log out </Text>
+                        <Text>Log out</Text>
                     </Button>
                 </Left>
                 <Body>
-                <Title> Patients </Title>
+                    <Title>Patients</Title>
                 </Body>
                 <Right>
                     <Button transparent title={null}
                             onPress={() => this.navigate(
-                                'AddPatient', { doctorToken: this.doctorToken })}>
-                        <Text> Add </Text>
+                                'AddManually', { doctorToken: this.doctorToken })}>
+                        <Text>Add</Text>
                     </Button>
                 </Right>
             </Header>
@@ -248,9 +248,7 @@ class PatientListPage extends Component {
                     {this.renderSearchButton()}
                     {this.renderContent()}
 
-                    <Text style={{color: 'grey', fontWeight: '400', alignSelf: 'center'}}>
-                        {this.props.searchError}
-                    </Text>
+                    <Text style={{color: 'grey', fontWeight: '400', alignSelf: 'center'}}>{this.props.searchError}</Text>
 
                     <Text style={{color: 'red'}}>{this.props.loadError}</Text>
 

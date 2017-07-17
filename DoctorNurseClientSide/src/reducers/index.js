@@ -15,7 +15,7 @@ export default combineReducers({
     singlepatient: PatientDetailReducer,
     editPatient: EditPatientReducer,
     addPatient: AddPatientReducer,
-    searchToAdd: SearchToAddReducer
+    searchToAdd: SearchToAddReducer,
     addPatient: AddPatientReducer,
     privateQuestions: PrivateQuestionReducer
 });

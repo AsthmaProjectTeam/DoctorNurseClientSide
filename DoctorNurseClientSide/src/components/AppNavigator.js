@@ -22,7 +22,7 @@ const AppNavigator = StackNavigator({
     EditPatient: { screen: EditPatientPage },
     AddManually: { screen: AddManually },
     SearchPatient: { screen: SearchPatient },
-    SearchResults: { screen: SearchResults }
+    SearchResults: { screen: SearchResults },
     PrivateQuestion: { screen: PrivateQuestionPage }
 });
 

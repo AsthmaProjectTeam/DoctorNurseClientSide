@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import {
     Container,
     Content,
@@ -19,6 +19,7 @@ import {
 } from 'native-base';
 import Dimensions from 'Dimensions';
 import { connect } from 'react-redux';
+import { HOST } from '../../CONST';
 
 uriSource = 'https://d3n8a8pro7vhmx.cloudfront.net/themes/57d734b533893fddfc000001/attachments/original/1473881108/default-profile-pic.jpg?1473881108';
 
@@ -34,7 +35,8 @@ class PatientDetailPage extends Component {
         const id = this.props.navigation.state.params.id;
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
-        fetch('http://127.0.0.1:8080/v2/initiators/profile',{
+        const navigate = this.props.navigation.navigate;
+        fetch(HOST+'/v2/initiators/profile',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -42,7 +44,7 @@ class PatientDetailPage extends Component {
                 'Authorization' : `token ${doctorToken}`
             }
         })
-            .then(this.handleErrors)
+            .then(response => globalerrorhandling(response))
             .then(response => response.json())
             .then(response => response.profile)
             .then(response => response.patients)
@@ -56,15 +58,18 @@ class PatientDetailPage extends Component {
                 });
             })
             .catch(error => {
-                console.log(error)
+                Alert.alert(
+                    'Error',
+                    'Your login info is invalid. Please login again.',
+                    [
+                        {text: 'OK', onPress: () => {
+                            console.log('OK Pressed');
+                            navigate('Login');
+                        }},
+                    ],
+                    { cancelable: false }
+                )
             });
-    }
-
-    handleErrors(response) {
-        if (!response.ok) {
-            throw Error(response.statusText);
-        }
-        return response;
     }
 
     // Produces temporary token for patient registration
@@ -73,14 +78,14 @@ class PatientDetailPage extends Component {
         const id = this.props.navigation.state.params.id;
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
-        fetch(`http://127.0.0.1:8080/v2/accounts/patients/${id}/register/temp-token`, {
+        fetch(HOST+`/v2/accounts/patients/${id}/register/temp-token`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': `token ${doctorToken}`
             }
-        }).then(this.handleErrors)
+        }).then(response => globalerrorhandling(response))
             .then(response => response.json())
             .then(response => response.token)
             .then(function (response) {
@@ -93,7 +98,17 @@ class PatientDetailPage extends Component {
             })
             .then(() => navigate('RegisterPhone'))
             .catch(error => {
-                console.log(error)
+                Alert.alert(
+                    'Error',
+                    'Your login info is invalid. Please login again.',
+                    [
+                        {text: 'OK', onPress: () => {
+                            console.log('OK Pressed');
+                            navigate('Login');
+                        }},
+                    ],
+                    { cancelable: false }
+                )
             });
     }
 
@@ -103,14 +118,15 @@ class PatientDetailPage extends Component {
         const id = this.props.navigation.state.params.id;
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const navigate = this.props.navigation.navigate;
-        fetch('http://127.0.0.1:8080/v2/admin/question-set', {
+        fetch(HOST+'/v2/admin/question-set', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Authorization': `token ${doctorToken}`
             }
-        }).then(response => response.json())
+        }).then(response => globalerrorhandling(response))
+            .then(response => response.json())
             .then(response => response.question_set)
             .then(function (response) {
                 if(question_set.length != 0) {
@@ -242,7 +258,12 @@ class PatientDetailPage extends Component {
                         <Button block
                                 warning
                                 style={buttonStyle}
-                                title="Make Patient Assessment">
+                                title="Make Patient Assessment"
+                                onPress={() =>
+                                this.props.navigation.navigate('PrivateQuestion',
+                                {
+                                    doctorToken: doctorToken
+                                })}>
                             <Text>Make Patient Assessment</Text>
                         </Button>
                         <Button block danger style={buttonStyle} onPress={() =>

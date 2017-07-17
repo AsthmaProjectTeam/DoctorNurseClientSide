@@ -5,6 +5,7 @@ import PatientDetailReducer from './PatientDetailReducer';
 import PatientListReducer from './PatientListReducer';
 import EditPatientReducer from './EditPatientReducer';
 import AddPatientReducer from './AddPatientReducer';
+import PrivateQuestionReducer from './PrivateQuestionReducer';
 
 export default combineReducers({
     entrance: EntranceReducer,
@@ -12,5 +13,6 @@ export default combineReducers({
     patients: PatientListReducer,
     singlepatient: PatientDetailReducer,
     editPatient: EditPatientReducer,
-    addPatient: AddPatientReducer
+    addPatient: AddPatientReducer,
+    privateQuestions: PrivateQuestionReducer
 });

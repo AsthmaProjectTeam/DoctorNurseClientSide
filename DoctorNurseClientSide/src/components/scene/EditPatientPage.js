@@ -20,6 +20,7 @@ import {
     Title
 } from 'native-base';
 import Dimensions from 'Dimensions';
+import { HOST } from '../../CONST';
 
 class EditPatient extends Component {
 
@@ -81,7 +82,7 @@ class EditPatient extends Component {
         const dispatch = this.props.dispatch;
         const id = this.props.navigation.state.params.patientInfo._id;
         const doctorToken = this.props.navigation.state.params.doctorToken;
-        fetch(`http://127.0.0.1:8080/v2/initiators/patients/${id}/profile`,{
+        fetch(HOST+`/v2/initiators/patients/${id}/profile`,{
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',

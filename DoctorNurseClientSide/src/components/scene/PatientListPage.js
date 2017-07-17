@@ -20,6 +20,7 @@ import {
     Input
 } from 'native-base';
 import Dimensions from 'Dimensions';
+import { HOST } from '../../CONST';
 
 // BUGS: - Newly added patients do not originally render in PatientList
 
@@ -47,7 +48,7 @@ class PatientListPage extends Component {
         this.dispatch({
            type: 'startListRetrieval'
         });
-        fetch('http://127.0.0.1:8080/v2/initiators/profile',{
+        fetch(HOST+'/v2/initiators/profile',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

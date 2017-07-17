@@ -8,6 +8,7 @@ import QRCodePage from './scene/QRCodePage';
 import QuestionSetListPage from './scene/QuestionSetListPage';
 import EditPatientPage from './scene/EditPatientPage';
 import AddPatientPage from './scene/AddPatientPage';
+import PrivateQuestionPage from './scene/PrivateQuestionPage';
 
 const AppNavigator = StackNavigator({
     Entrance: { screen: EntrancePage },
@@ -17,7 +18,8 @@ const AppNavigator = StackNavigator({
     RegisterPhone: { screen: QRCodePage },
     AddQuestionSet: { screen: QuestionSetListPage },
     EditPatient: { screen: EditPatientPage },
-    AddPatient: { screen: AddPatientPage }
+    AddPatient: { screen: AddPatientPage },
+    PrivateQuestion: { screen: PrivateQuestionPage }
 });
 
 export default () => (<AppNavigator onNavigationStateChange={null}/>);

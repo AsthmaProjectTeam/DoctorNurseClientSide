@@ -6,6 +6,7 @@ import PatientListReducer from './PatientListReducer';
 import EditPatientReducer from './EditPatientReducer';
 import AddPatientReducer from './AddPatientReducer';
 import SearchToAddReducer from './SearchToAddPatientReducer';
+import PrivateQuestionReducer from './PrivateQuestionReducer';
 
 export default combineReducers({
     entrance: EntranceReducer,
@@ -15,4 +16,6 @@ export default combineReducers({
     editPatient: EditPatientReducer,
     addPatient: AddPatientReducer,
     searchToAdd: SearchToAddReducer
+    addPatient: AddPatientReducer,
+    privateQuestions: PrivateQuestionReducer
 });

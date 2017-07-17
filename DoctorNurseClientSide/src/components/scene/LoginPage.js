@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { AsyncStorage } from 'react-native';
 import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text } from 'native-base';
 import Dimensions from 'Dimensions';
-
+import { HOST } from '../../CONST';
 
 class LoginPage extends Component {
     uriSource = 'https://s-media-cache-ak0.pinimg.com/236x/d3/66/78/d36678c183f27a176e8790390f94dcba--ppt-template-templates.jpg';
@@ -42,7 +42,7 @@ class LoginPage extends Component {
     onButtonPress() {
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
-        fetch('http://127.0.0.1:8080/v2/accounts/initiators/login',{
+        fetch(HOST+'/v2/accounts/initiators/login',{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

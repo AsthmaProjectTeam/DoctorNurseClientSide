@@ -20,6 +20,7 @@ import {
     Title
 } from 'native-base';
 import Dimensions from 'Dimensions';
+import { HOST } from '../../CONST';
 
 class AddManually extends Component {
 
@@ -75,7 +76,7 @@ class AddManually extends Component {
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
-        fetch("http://127.0.0.1:8080/v2/initiators/patients/new",{
+        fetch(HOST+"/v2/initiators/patients/new",{
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ class AddManually extends Component {
             .then(response => response.json())
             .then(response => response.patient)
             .then(response => response._id)
-            .then((response) => fetch("http://127.0.0.1:8080/v2/initiators/patients/add",{
+            .then((response) => fetch(HOST+"/v2/initiators/patients/add",{
                 method: 'PATCH',
                 headers: {
                     'Content-Type': 'application/json',

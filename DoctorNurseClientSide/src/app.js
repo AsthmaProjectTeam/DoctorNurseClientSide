@@ -4,6 +4,9 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import reducers from './reducers';
 import AppNavigator from './components/AppNavigator';
+import globalerrorhandling from './components/GlobalErrorHandler';
+import saveGlobalDoctorToken from './components/GlobalDataStorage';
+import getGlobalDoctorToken from './components/GlobalDataStorage';
 
 class App extends Component {
 

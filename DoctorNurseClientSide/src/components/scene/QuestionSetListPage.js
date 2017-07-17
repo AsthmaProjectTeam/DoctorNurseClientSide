@@ -4,6 +4,8 @@ import { Container, Content, Body, Button, Text, Header, Left, Icon, Title, Righ
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
 import CheckBox from 'react-native-check-box';
+import { HOST } from '../../CONST';
+
 class QuestionSetListPage extends Component {
 
     static navigationOptions = {
@@ -74,7 +76,7 @@ class QuestionSetListPage extends Component {
         for(qset of this.props.selectedquestionset){
             qsetid.push(qset._id)
         }
-        fetch('http://127.0.0.1:8080/v2/initiators/patients/question-set', {
+        fetch(HOST+'/v2/initiators/patients/question-set', {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ class QuestionSetListPage extends Component {
         for(qset of this.props.selectedquestionset){
             qsetid.push(qset._id)
         }
-        fetch(`http://127.0.0.1:8080/v2/initiators/patients/${id}/question-set`, {
+        fetch(HOST+`/v2/initiators/patients/${id}/question-set`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

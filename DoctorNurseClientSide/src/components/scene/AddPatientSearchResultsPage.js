@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { View } from 'react-native';
 import {
     Header,
     Container,
@@ -33,6 +34,14 @@ class SearchResults extends Component {
         header: null
     };
 
+    // Handles errors with server fetch calls
+    handleErrors(response) {
+        if (!response.ok) {
+            throw Error(response.statusText);
+        }
+        return response;
+    }
+
     onAddPressed(patient) {
         const doctorToken = this.props.navigation.state.params.doctorToken;
         const dispatch = this.props.dispatch;
@@ -49,6 +58,7 @@ class SearchResults extends Component {
                 'patients_id': [ id ]
             })
         })
+            .then(this.handleErrors)
             .then(dispatch({
                 type: 'addPatientSuccess'
             }))
@@ -85,46 +95,6 @@ class SearchResults extends Component {
         }
     }
 
-    renderMessage() {
-        return (
-            <Text style={styles.textStyle}>
-                Displaying results for "{this.props.firstName} {this.props.lastName}"
-            </Text>
-        )
-    }
-
-    renderContent() {
-        return (
-            <Content>
-                <Card>
-                    <List dataArray={this.props.navigation.state.params.results}
-                          renderRow={(patient) =>
-                              <ListItem>
-                                  <Text>
-                                      {/*{`${this.checkNameLength(patient.first_name)} ${this.checkNameLength(patient.last_name)}*/}
-                                      {/*"\n"${patient.mrn}"\n"${this.sliceDoB(patient.date_of_birth)}`}*/}
-                                      {patient.first_name} {patient.last_name}
-                                  </Text>
-                                  <Right>
-                                      <Button info small title={null} onPress={this.onAddPressed(patient).bind(this)}>
-                                          <Text>Add</Text>
-                                      </Button>
-                                  </Right>
-                              </ListItem>
-                          }>
-                    </List>
-                </Card>
-
-                <Text style={styles.errorTextStyle}>{this.props.addError}</Text>
-
-                <Text style={styles.textStyle}>Don't see your intended patient?</Text>
-                <Button success style={styles.buttonStyle} title={null} onPress={this.onAddManuallyPressed.bind(this)}>
-                    <Text>Add Manually</Text>
-                </Button>
-            </Content>
-        )
-    }
-
     render() {
         return (
             <Container style={styles.containerStyle}>
@@ -141,8 +111,39 @@ class SearchResults extends Component {
                     <Right></Right>
                 </Header>
 
-                {this.renderMessage()}
-                {this.renderContent()}
+                <Text style={styles.textStyle}>
+                    Displaying results for "{this.props.firstName} {this.props.lastName}"
+                </Text>
+
+                <Content>
+                    <Card>
+                        <View style={{}}>
+                            <List dataArray={this.props.navigation.state.params.results}
+                                  renderRow={(patient) =>
+                                      <ListItem>
+                                          <Text>
+                                              {/*{`${this.checkNameLength(patient.first_name)} ${this.checkNameLength(patient.last_name)}*/}
+                                              {/*"\n"${patient.mrn}"\n"${this.sliceDoB(patient.date_of_birth)}`}*/}
+                                              {patient.first_name} {patient.last_name}
+                                          </Text>
+                                          <Right>
+                                              <Button info small title={null} onPress={this.onAddPressed(patient).bind(this)}>
+                                                  <Text>Add</Text>
+                                              </Button>
+                                          </Right>
+                                      </ListItem>
+                                  }>
+                            </List>
+                        </View>
+                    </Card>
+
+                    <Text style={styles.errorTextStyle}>{this.props.addError}</Text>
+
+                    <Text style={styles.textStyle}>Don't see your intended patient?</Text>
+                    <Button success style={styles.buttonStyle} title={null} onPress={this.onAddManuallyPressed.bind(this)}>
+                        <Text>Add Manually</Text>
+                    </Button>
+                </Content>
 
             </Container>
         );

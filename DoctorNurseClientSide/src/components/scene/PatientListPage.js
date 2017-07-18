@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
+import { View } from 'react-native';
 import {
     Header,
     Container,
@@ -167,7 +168,7 @@ class PatientListPage extends Component {
                 <Right>
                     <Button transparent title={null}
                             onPress={() => this.navigate(
-                                'AddManually', { doctorToken: this.doctorToken })}>
+                                'SearchPatient', { doctorToken: this.doctorToken })}>
                         <Text>Add</Text>
                     </Button>
                 </Right>
@@ -205,18 +206,20 @@ class PatientListPage extends Component {
         }
         return (  // Renders all patients under initiator
             <Card>
-                <List dataArray={this.props.patientsList}
-                      renderRow={(patient) =>
-                          <ListItem button
-                                    onPress={() => this.navigate('PatientDetail',
-                                        { id: patient._id, doctorToken: this.doctorToken })}>
-                              <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
-                              <Right>
-                                <Text>{this.sliceDoB(patient.date_of_birth)}</Text>
-                              </Right>
-                          </ListItem>
-                      }>
-                </List>
+                <View style={{height: 550}}>
+                    <List dataArray={this.props.patientsList}
+                          renderRow={(patient) =>
+                              <ListItem button
+                                        onPress={() => this.navigate('PatientDetail',
+                                            { id: patient._id, doctorToken: this.doctorToken })}>
+                                  <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
+                                  <Right>
+                                    <Text>{this.sliceDoB(patient.date_of_birth)}</Text>
+                                  </Right>
+                              </ListItem>
+                          }>
+                    </List>
+                </View>
             </Card>
         )
     }

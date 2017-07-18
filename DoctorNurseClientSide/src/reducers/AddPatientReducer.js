@@ -22,8 +22,6 @@ export default (state = INITIAL_STATE, action) => {
             return { ...INITIAL_STATE };
         case 'saveFail':
             return { ...state, error:'Failed to add patient' };
-        case 'cancelPressed':
-            return { ...INITIAL_STATE };
         default:
             return state;
     }

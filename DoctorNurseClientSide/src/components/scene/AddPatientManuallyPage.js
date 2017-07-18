@@ -25,7 +25,8 @@ import { HOST } from '../../CONST';
 class AddManually extends Component {
 
     static navigationOptions = {
-        header: null
+        headerTitle: 'Add Patient',
+        headerBackTitle: "Results"  // This does not show...
     };
 
     // Fixes bug: error is displayed when returning to 'AddPatientPage'
@@ -122,33 +123,9 @@ class AddManually extends Component {
             })
     }
 
-    // Returns to PatientList page... No other action
-    onBackPressed() {
-        this.props.dispatch({
-            type: 'cancelPressed'
-        });
-        this.props.navigation.navigate('PatientList',
-            { doctorToken: this.props.navigation.state.params.doctorToken })
-    }
-
     render() {
         return (
             <Container>
-                <Header>
-                    <Left>
-                        <Button transparent title={null}
-                                onPress={this.onBackPressed.bind(this)}>
-                            <Icon name='arrow-back' />
-                            <Text>Back</Text>
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>Add Patient</Title>
-                    </Body>
-                    <Right>
-                    </Right>
-                </Header>
-
                 <Content>
                     <Card style={styles.cardStyle}>
                         <CardItem>

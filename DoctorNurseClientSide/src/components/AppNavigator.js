@@ -13,7 +13,7 @@ import SearchResults from './scene/AddPatientSearchResultsPage';
 import PrivateQuestionPage from './scene/PrivateQuestionPage';
 
 const AppNavigator = StackNavigator({
-    Entrance: { screen: EntrancePage },
+    //Entrance: { screen: EntrancePage },
     Login: { screen: LoginPage },
     PatientList: { screen: PatientListPage },
     PatientDetail: { screen: PatientDetailPage },

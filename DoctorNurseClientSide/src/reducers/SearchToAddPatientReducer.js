@@ -1,6 +1,11 @@
 const INITIAL_STATE = {
-    error: "",
-    addError: "",
+    isLoading: false,
+    isSearching: true,
+    searchResults: [],
+    searchError: null,
+    addError: null,
+    addSuccess: false,
+    blankFieldsError: null,
     firstName: "",
     lastName: ""
 };
@@ -13,18 +18,23 @@ export default (state = INITIAL_STATE, action) => {
             return { ...state, lastName: action.payload };
         case 'cancelPressed':
             return { ...INITIAL_STATE };
-        case 'searchPressedAndBlankFields':
-            return { ...state, error: 'You must provide at least one field' };
+        case 'searchPressedWithBlankFields':
+            return { ...state, blankFieldsError: 'You must provide at least one field' };
         case 'searchPressedCorrectly':
-            return { ...state, error: null };
+            return { ...state, isLoading: true, blankFieldsError: null, searchError: null };
         case 'resultsRetrievalSuccess':
-            return { ...state, error: null };
+            return { ...state, searchResults: action.payload, isLoading: false, isSearching: false };
         case 'resultsRetrievalFailed':
-            return { ...state, error: 'Unable to search for patient.'};
+            return { ...state, isLoading: false, searchError: 'Unable to search for patient.' };
+        case 'addPressed':
+            return { ...state, isLoading: true, addError: null };
         case 'addPatientSuccess':
+            //return { ...state, isLoading: false, addSuccess: true };
             return { ...INITIAL_STATE };
         case 'addPatientFailed':
-            return { ...state, addError: 'Unable to add patient' };
+            return { ...state, isLoading: false, addError: 'Unable to add patient' };
+        case 'searchAgainPressed':
+            return { ...INITIAL_STATE };
         default:
             return state;
     }

@@ -8,6 +8,9 @@ class QRCodePage extends Component {
 
     render(){
         const { viewStyle, messageContent, messageBox, messageBoxText } = styles;
+        const data = {
+            token: this.props.tmptoken
+        };
         return(
             <View>
                 <View style={messageContent}>
@@ -19,7 +22,7 @@ class QRCodePage extends Component {
                 </View>
                 <View style={viewStyle}>
                     <QRCode
-                        value={this.props.tmptoken}
+                        value={data}
                         size={200}
                         bgColor='#804000'
                         fgColor='white'

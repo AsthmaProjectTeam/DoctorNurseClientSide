@@ -9,7 +9,7 @@ class QRCodePage extends Component {
     render(){
         const { viewStyle, messageContent, messageBox, messageBoxText } = styles;
         const data = {
-            token: this.props.tmptoken:
+            token: this.props.tmptoken
         };
         return(
             <View>

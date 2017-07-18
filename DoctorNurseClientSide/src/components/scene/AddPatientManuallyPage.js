@@ -22,7 +22,7 @@ import {
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
 
-class AddPatient extends Component {
+class AddManually extends Component {
 
     static navigationOptions = {
         header: null
@@ -123,12 +123,12 @@ class AddPatient extends Component {
     }
 
     // Returns to PatientList page... No other action
-    onCancelPressed() {
+    onBackPressed() {
         this.props.dispatch({
             type: 'cancelPressed'
         });
         this.props.navigation.navigate('PatientList',
-            { doctorToken:this.props.navigation.state.params.doctorToken })
+            { doctorToken: this.props.navigation.state.params.doctorToken })
     }
 
     render() {
@@ -137,9 +137,9 @@ class AddPatient extends Component {
                 <Header>
                     <Left>
                         <Button transparent title={null}
-                                onPress={this.onCancelPressed.bind(this)}>
+                                onPress={this.onBackPressed.bind(this)}>
                             <Icon name='arrow-back' />
-                            <Text>Cancel</Text>
+                            <Text>Back</Text>
                         </Button>
                     </Left>
                     <Body>
@@ -158,6 +158,7 @@ class AddPatient extends Component {
                                         <Item stackedLabel>
                                             <Label>First Name</Label>
                                             <Input autoCorrect={false}
+                                                   placeholder="John"
                                                    onChangeText={(text) =>
                                                        this.onFirstNameChanged(text)}
                                             />
@@ -165,6 +166,7 @@ class AddPatient extends Component {
                                         <Item stackedLabel>
                                             <Label>Last Name</Label>
                                             <Input autoCorrect={false}
+                                                   placeholder="Smith"
                                                    onChangeText={(text) =>
                                                        this.onLastNameChanged(text)}
                                             />
@@ -172,6 +174,7 @@ class AddPatient extends Component {
                                         <Item stackedLabel>
                                             <Label>Date of Birth (YYYY-MM-DD)</Label>
                                             <Input autoCorrect={false}
+                                                   placeholder="1980-01-01"
                                                    onChangeText={(text) =>
                                                        this.onDoBChanged(text)}
                                             />
@@ -179,6 +182,7 @@ class AddPatient extends Component {
                                         <Item stackedLabel last>
                                             <Label>MRN</Label>
                                             <Input autoCorrect={false}
+                                                   placeholder="123456789"
                                                    onChangeText={(text) =>
                                                        this.onMrnChanged(text)}
                                             />
@@ -232,4 +236,4 @@ const mapStateToProps = state => {
     };
 };
 
-export default connect(mapStateToProps)(AddPatient);
+export default connect(mapStateToProps)(AddManually);

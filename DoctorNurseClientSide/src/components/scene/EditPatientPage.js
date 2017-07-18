@@ -119,6 +119,15 @@ class EditPatient extends Component {
         })
     }
 
+    // Removes time of day from date of birth timestamp
+    sliceDoB (DoB) {
+        if (typeof DoB === "string") {
+            return DoB.slice(0,10);
+        } else {
+            return DoB;
+        }
+    }
+
     render() {
         const uriSource = this.props.navigation.state.params.uriSource;
 
@@ -165,7 +174,7 @@ class EditPatient extends Component {
                                         </Item>
                                         <Item stackedLabel last>
                                             <Label>Date of Birth ('YYYY-MM-DD')</Label>
-                                            <Input placeholder={this.props.dateOfBirth}
+                                            <Input placeholder={this.sliceDoB(this.props.dateOfBirth)}
                                                    autoCapitalize='none'
                                                    autoCorrect={false}
                                                    onChangeText={(text) =>

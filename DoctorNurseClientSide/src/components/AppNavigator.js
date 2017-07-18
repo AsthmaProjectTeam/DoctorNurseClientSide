@@ -7,7 +7,9 @@ import PatientDetailPage from './scene/PatientDetailPage';
 import QRCodePage from './scene/QRCodePage';
 import QuestionSetListPage from './scene/QuestionSetListPage';
 import EditPatientPage from './scene/EditPatientPage';
-import AddPatientPage from './scene/AddPatientPage';
+import AddManually from './scene/AddPatientManuallyPage';
+import SearchPatient from './scene/SearchToAddPatient';
+import SearchResults from './scene/AddPatientSearchResultsPage';
 import PrivateQuestionPage from './scene/PrivateQuestionPage';
 
 const AppNavigator = StackNavigator({
@@ -18,7 +20,9 @@ const AppNavigator = StackNavigator({
     RegisterPhone: { screen: QRCodePage },
     AddQuestionSet: { screen: QuestionSetListPage },
     EditPatient: { screen: EditPatientPage },
-    AddPatient: { screen: AddPatientPage },
+    AddManually: { screen: AddManually },
+    SearchPatient: { screen: SearchPatient },
+    SearchResults: { screen: SearchResults },
     PrivateQuestion: { screen: PrivateQuestionPage }
 });
 

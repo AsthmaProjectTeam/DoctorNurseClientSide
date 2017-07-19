@@ -9,11 +9,10 @@ import QuestionSetListPage from './scene/QuestionSetListPage';
 import EditPatientPage from './scene/EditPatientPage';
 import AddManually from './scene/AddPatientManuallyPage';
 import SearchPatient from './scene/SearchToAddPatient';
-import SearchResults from './scene/AddPatientSearchResultsPage';
 import PrivateQuestionPage from './scene/PrivateQuestionPage';
 
 const AppNavigator = StackNavigator({
-    //Entrance: { screen: EntrancePage },
+    Entrance: { screen: EntrancePage },
     Login: { screen: LoginPage },
     PatientList: { screen: PatientListPage },
     PatientDetail: { screen: PatientDetailPage },
@@ -22,7 +21,6 @@ const AppNavigator = StackNavigator({
     EditPatient: { screen: EditPatientPage },
     AddManually: { screen: AddManually },
     SearchPatient: { screen: SearchPatient },
-    SearchResults: { screen: SearchResults },
     PrivateQuestion: { screen: PrivateQuestionPage }
 });
 

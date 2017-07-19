@@ -16,17 +16,21 @@ class QRCodePage extends Component {
                 <View style={messageContent}>
                     <View style={messageBox}>
                         <View>
-                            <Text style={messageBoxText}>Scan the QR Code below to Register Your Phone</Text>
+                            <Text style={messageBoxText}>Scan the QR Code below to Register.</Text>
                         </View>
                     </View>
                 </View>
                 <View style={viewStyle}>
-                    <QRCode
-                        value={data}
-                        size={200}
-                        bgColor='#804000'
-                        fgColor='white'
-                    />
+                    {
+                        this.props.tmptoken?
+                        <QRCode
+                            value={JSON.stringify(data) }
+                            size={200}
+                            bgColor='#804000'
+                            fgColor='white'
+                        />:<Text>Loading...</Text>
+                    }
+
                 </View>
             </View>
 

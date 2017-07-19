@@ -140,7 +140,7 @@ class PatientListPage extends Component {
                 <Header searchBar rounded>
                     <Item>
                         <Icon name="ios-search" />
-                        <Input placeholder="Search Patients"
+                        <Input placeholder="Search Patients..."
                                autoCorrect={false}
                                autoCapitalize='words'
                                onChangeText={(text) => this.onSearchInputChanged(text)}/>

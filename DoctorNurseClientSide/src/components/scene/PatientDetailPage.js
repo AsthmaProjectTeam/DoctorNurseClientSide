@@ -230,7 +230,7 @@ class PatientDetailPage extends Component {
                                                 </Text>
                                             )
                                         }):<Text note>
-                                                This patient has no question set
+                                                This patient has no question set.
                                            </Text>}
                                 </ScrollView>
                             </Body>

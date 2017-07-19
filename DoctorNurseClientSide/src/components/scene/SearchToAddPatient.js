@@ -22,6 +22,7 @@ import {
     Item,
     Input
 } from 'native-base';
+import Toast from 'react-native-simple-toast';
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
 
@@ -117,10 +118,11 @@ class SearchPatient extends Component {
             })
         })
             .then(this.handleErrors)
-            .then(() => dispatch({
-                type: 'addPatientSuccess'
-            }))
-            .then(() => navigate('PatientList', {doctorToken: doctorToken }))
+            .then(Toast.show(`Successfully Added ${patient.first_name} ${patient.last_name}!`, Toast.LONG))
+            .then(setTimeout(
+                () => { dispatch({ type: 'addPatientSuccess' });
+                        navigate('PatientList', {doctorToken: doctorToken });
+                      }, 2000))
             .catch(() => dispatch({
                 type: 'addPatientFailed'
             }))
@@ -188,7 +190,7 @@ class SearchPatient extends Component {
         if (this.props.searchResults.length===0) {
             return(
                 <Content>
-                    <Text style={{...styles.textStyle,fontSize:20,paddingBottom:30,color:'mediumorchid'}}>Sorry, no results matched your search...</Text>
+                    <Text style={{...styles.textStyle,fontSize:14,paddingBottom:30,color:'mediumorchid'}}>Sorry, no results matched "{this.props.firstName} {this.props.lastName}"</Text>
                     {this.renderOptionButtons()}
                 </Content>
             )

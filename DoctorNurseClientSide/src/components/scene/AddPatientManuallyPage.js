@@ -19,6 +19,7 @@ import {
     Icon,
     Title
 } from 'native-base';
+import Toast from 'react-native-simple-toast';
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
 
@@ -107,15 +108,11 @@ class AddManually extends Component {
                 })
             }))
             .then(this.handleErrors)
-            .then(
-                dispatch({
-                    type: 'saveSuccess'
-                })
-            )
-            .then(navigate('PatientList', {
-                    doctorToken: doctorToken
-                })
-            )
+            .then(Toast.show(`Successfully Added ${this.props.firstName} ${this.props.lastName}!`, Toast.LONG))
+            .then(setTimeout(
+                () => { dispatch({type: 'saveSuccess'});
+                        navigate('PatientList', { doctorToken: doctorToken });
+                      }, 2000))
             .catch(() => {
                 dispatch({
                     type: 'saveFail'

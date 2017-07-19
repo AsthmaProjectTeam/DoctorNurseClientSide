@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
                      searchResults: action.payload };
         case 'listRetrievalFailed':
             return { ...state,
-                     loadError: 'Patient List unavailable',
+                     loadError: 'Patient List unavailable.',
                      patientsList: [],
                      loading: false };
         case 'searchPressed':

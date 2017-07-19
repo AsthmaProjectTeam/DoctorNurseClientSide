@@ -22,7 +22,7 @@ export default (state = INITIAL_STATE, action) => {
         case 'saveSuccess':
             return { ...INITIAL_STATE };
         case 'saveFail':
-            return { ...state, error:'Failed to update profile' };
+            return { ...state, error:'Failed to update profile.' };
         case 'cancelPressed':
             return { ...INITIAL_STATE };
         default:

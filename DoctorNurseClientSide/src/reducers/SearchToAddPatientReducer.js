@@ -19,7 +19,7 @@ export default (state = INITIAL_STATE, action) => {
         case 'cancelPressed':
             return { ...INITIAL_STATE };
         case 'searchPressedWithBlankFields':
-            return { ...state, blankFieldsError: 'You must provide at least one field' };
+            return { ...state, blankFieldsError: 'You must provide at least one field.' };
         case 'searchPressedCorrectly':
             return { ...state, isLoading: true, blankFieldsError: null, searchError: null };
         case 'resultsRetrievalSuccess':
@@ -29,10 +29,9 @@ export default (state = INITIAL_STATE, action) => {
         case 'addPressed':
             return { ...state, isLoading: true, addError: null };
         case 'addPatientSuccess':
-            //return { ...state, isLoading: false, addSuccess: true };
             return { ...INITIAL_STATE };
         case 'addPatientFailed':
-            return { ...state, isLoading: false, addError: 'Unable to add patient' };
+            return { ...state, isLoading: false, addError: 'Unable to add patient.' };
         case 'searchAgainPressed':
             return { ...INITIAL_STATE };
         default:

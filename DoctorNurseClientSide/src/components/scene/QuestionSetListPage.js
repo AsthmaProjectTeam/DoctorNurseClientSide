@@ -162,7 +162,7 @@ class QuestionSetListPage extends Component {
                                 doctorToken: doctorToken
                             })}>
                                 <Icon name='arrow-back' />
-                                <Text> Back </Text>
+                                <Text>Back</Text>
                             </Button>
                         </Left>
                         <Body>
@@ -170,20 +170,7 @@ class QuestionSetListPage extends Component {
                         </Body>
                         <Right></Right>
                     </Header>
-                    {/*<List dataArray={this.props.questionsetlist}*/}
-                          {/*renderRow={(qset) => {*/}
-                              {/*return(*/}
-                                  {/*<ListItem>*/}
-                                  {/*<CheckBox*/}
-                                      {/*isChecked={this.props.checkedqsetid[qset._id]}*/}
-                                      {/*onClick={() => this.onClickQset(qset)}*/}
-                                      {/*style={checkboxStyle}*/}
-                                  {/*/>*/}
-                                  {/*<Text>{qset.title}</Text>*/}
-                                  {/*</ListItem>*/}
-                              {/*)*/}
-                          {/*}}>*/}
-                    {/*</List>*/}
+
                     <ListView
                         dataSource={this.dataSource}
                         renderRow={(qset) => {

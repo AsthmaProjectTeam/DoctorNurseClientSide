@@ -21,7 +21,7 @@ export default (state = INITIAL_STATE, action) => {
         case 'saveSuccess':
             return { ...INITIAL_STATE };
         case 'saveFail':
-            return { ...state, error:'Failed to add patient' };
+            return { ...state, error:'Failed to add patient.' };
         default:
             return state;
     }

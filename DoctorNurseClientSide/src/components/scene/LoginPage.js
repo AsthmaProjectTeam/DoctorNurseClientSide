@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage } from 'react-native';
-import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text } from 'native-base';
+import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text, Spinner } from 'native-base';
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
 
@@ -42,6 +42,9 @@ class LoginPage extends Component {
     onButtonPress() {
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
+        dispatch({
+            type: 'loginStarted'
+        });
         fetch(HOST+'/v2/accounts/initiators/login',{
             method: 'POST',
             headers: {
@@ -70,8 +73,25 @@ class LoginPage extends Component {
         });
     }
 
+    renderButton() {
+        if (this.props.isLoading) {
+            return (<Spinner color="green"
+                             animating={this.props.loading}
+                             hidesWhenStopped={true}/>)
+        }
+        return (
+            <Button block
+                    success
+                    style={styles.buttonStyle}
+                    onPress={this.onButtonPress.bind(this)}
+                    title={null}>
+                <Text>Log in</Text>
+            </Button>
+        )
+    }
+
     render() {
-        const { containerStyle, logoStyle, buttonStyle, formStyle, errorStyle } = styles;
+        const { containerStyle, logoStyle, formStyle, errorStyle } = styles;
         return(
             <Container style={containerStyle}>
                 <Content>
@@ -102,13 +122,7 @@ class LoginPage extends Component {
                         {this.props.error}
                     </Text>
 
-                    <Button block
-                            success
-                            style={buttonStyle}
-                            onPress={this.onButtonPress.bind(this)}
-                            title={null}>
-                        <Text>Log in</Text>
-                    </Button>
+                    {this.renderButton()}
                 </Content>
             </Container>
         );
@@ -151,7 +165,8 @@ const mapStateToProps = state => {
         username: state.login.username,
         password: state.login.password,
         error: state.login.error,
-        isLoggedIn: state.login.isLoggedIn
+        isLoggedIn: state.login.isLoggedIn,
+        isLoading: state.login.isLoading
     };
 };
 

@@ -172,6 +172,7 @@ class QuestionSetListPage extends Component {
                     </Header>
 
                     <ListView
+                        style={{height: Dimensions.get('window').height*0.7}}
                         dataSource={this.dataSource}
                         renderRow={(qset) => {
                             return(
@@ -231,8 +232,7 @@ const styles = {
 
     textStyle: {
         fontSize: 18,
-        alignSelf: 'center',
-        letterSpacing: 2
+        alignSelf: 'center'
     }
 };
 

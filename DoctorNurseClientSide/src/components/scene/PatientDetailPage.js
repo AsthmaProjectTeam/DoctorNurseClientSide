@@ -243,7 +243,7 @@ class PatientDetailPage extends Component {
                                 style={buttonStyle}
                                 onPress={this.getTmpToken.bind(this)}
                                 title="Register Phone">
-                            <Text>Register Phone</Text>
+                            <Text>Register Patient</Text>
                         </Button>
                         <Button block
                                 success

@@ -70,7 +70,7 @@ class PrivateQuestionPage extends Component{
     }
 
     submitButtonClicked(){
-        Toast.show('Successfully Submit the Form!', Toast.SHORT);
+        Toast.show('Form Successfully Submitted!', Toast.SHORT);
         const doctorToken = this.props.navigation.state.params.doctorToken;
         this.props.navigation.navigate('PatientList', {doctorToken: doctorToken});
     }

@@ -130,7 +130,6 @@ class EditPatient extends Component {
     }
 
     render() {
-        const uriSource = this.props.navigation.state.params.uriSource;
 
         return(
             <Container>
@@ -150,7 +149,7 @@ class EditPatient extends Component {
                 </Header>
 
                 <Content>
-                    <Thumbnail square large style={styles.thumbnailStyle} source={{uri: uriSource}} />
+                    <Thumbnail square large style={styles.thumbnailStyle} source={require('../../img/silhouette.jpg')} />
                     <Text style={styles.errorTextStyle} >{this.props.error}</Text>
                     <Card style={styles.cardStyle}>
                         <CardItem>

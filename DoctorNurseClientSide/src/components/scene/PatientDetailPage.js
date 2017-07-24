@@ -21,7 +21,7 @@ import Dimensions from 'Dimensions';
 import { connect } from 'react-redux';
 import { HOST } from '../../CONST';
 
-uriSource = 'https://d3n8a8pro7vhmx.cloudfront.net/themes/57d734b533893fddfc000001/attachments/original/1473881108/default-profile-pic.jpg?1473881108';
+
 
 class PatientDetailPage extends Component {
 
@@ -198,7 +198,7 @@ class PatientDetailPage extends Component {
                             <Left>
                                 <Thumbnail square
                                            large
-                                           source={{uri: uriSource}}
+                                           source={require('../../img/silhouette.jpg')}
                                            style={styles.thumbnailStyle}/>
                                 <Body>
                                 </Body>
@@ -208,7 +208,6 @@ class PatientDetailPage extends Component {
                                     style={{marginTop: 10}}
                                     onPress={() => navigate('EditPatient',
                                         {
-                                            uriSource: uriSource,
                                             patientInfo: patient,
                                             doctorToken: doctorToken
                                         })}>

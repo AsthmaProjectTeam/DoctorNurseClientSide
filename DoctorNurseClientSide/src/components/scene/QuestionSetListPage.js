@@ -9,7 +9,8 @@ import { HOST } from '../../CONST';
 class QuestionSetListPage extends Component {
 
     static navigationOptions = {
-        header: null
+        header: null,
+        gesturesEnabled: false
     };
 
     // Retrieves patients unassigned question lists

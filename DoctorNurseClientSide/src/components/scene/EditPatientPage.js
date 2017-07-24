@@ -25,7 +25,8 @@ import { HOST } from '../../CONST';
 class EditPatient extends Component {
 
     static navigationOptions = {
-        header: null
+        header: null,
+        gesturesEnabled: false
     };
 
     // Fetches patient's current info to act as placeholders
@@ -187,7 +188,7 @@ class EditPatient extends Component {
                         </CardItem>
                     </Card>
 
-                    <Button success
+                    <Button success block
                             title={null}
                             onPress={this.onSavePressed.bind(this)}
                             style={styles.buttonStyle} >

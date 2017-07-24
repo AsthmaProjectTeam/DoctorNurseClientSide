@@ -26,7 +26,8 @@ uriSource = 'https://d3n8a8pro7vhmx.cloudfront.net/themes/57d734b533893fddfc0000
 class PatientDetailPage extends Component {
 
     static navigationOptions = {
-        header: null
+        header: null,
+        gesturesEnabled: false
     };
 
     // Attempts to gather patient's profile
@@ -216,67 +217,75 @@ class PatientDetailPage extends Component {
                         </CardItem>
                         <CardItem>
                             <Body>
-                                <Text style={listStyle}>MRN: {patient.mrn}</Text>
+                                <Text style={listStyle}>ID: {patient.mrn}</Text>
                                 <Text style={listStyle}>First Name: {patient.first_name}</Text>
                                 <Text style={listStyle}>Last Name: {patient.last_name}</Text>
                                 <Text style={listStyle}>Date of Birth: {this.sliceDoB(patient.date_of_birth)}</Text>
-                                <Text style={listStyle}>Question Sets:</Text>
-                                <ScrollView style={{height: 45, marginLeft: 15, marginBottom: 10}}>
-                                    {patient.question_set?patient.question_set.map((qset) => {
-                                            return(
-                                                <Text note
-                                                      key={patient.question_set.indexOf(qset)}>
-                                                    {qset.title}
-                                                </Text>
-                                            )
-                                        }):<Text note>
-                                                This patient has no question set.
-                                           </Text>}
-                                </ScrollView>
+                                {/*<Text style={listStyle}>Question Sets:</Text>*/}
+                                {/*<ScrollView style={{height: 45, marginLeft: 15, marginBottom: 10}}>*/}
+                                    {/*{patient.question_set?patient.question_set.map((qset) => {*/}
+                                            {/*return(*/}
+                                                {/*<Text note*/}
+                                                      {/*key={patient.question_set.indexOf(qset)}>*/}
+                                                    {/*{qset.title}*/}
+                                                {/*</Text>*/}
+                                            {/*)*/}
+                                        {/*}):<Text note>*/}
+                                                {/*This patient has no question set.*/}
+                                           {/*</Text>}*/}
+                                {/*</ScrollView>*/}
                             </Body>
                         </CardItem>
                     </Card>
 
-                    <View style={buttonListStyle}>
-                        <Button block
-                                info
-                                style={buttonStyle}
-                                onPress={this.getTmpToken.bind(this)}
-                                title="Register Phone">
-                            <Text>Register Patient</Text>
-                        </Button>
-                        <Button block
-                                success
-                                style={buttonStyle}
-                                onPress={this.getQuestionSetList.bind(this)}
-                                title="Add Question Set">
-                            <Text>Add Question Set</Text>
-                        </Button>
-                    </View>
+                    <Button block info style={{width: Dimensions.get('window').width*0.8,
+                                               alignSelf: 'center',
+                                               margin: 15, height: 60}}
+                            onPress={this.getTmpToken.bind(this)}
+                            title={null}>
+                        <Text>Register Patient</Text>
+                    </Button>
 
-                    <View style={buttonListStyle}>
-                        <Button block
-                                warning
-                                style={buttonStyle}
-                                title="Make Patient Assessment"
-                                onPress={() =>
-                                this.props.navigation.navigate('PrivateQuestion',
-                                {
-                                    doctorToken: doctorToken
-                                })}>
-                            <Text>Make Patient Assessment</Text>
-                        </Button>
-                        <Button block danger style={buttonStyle} onPress={() =>
-                            this.props.navigation.navigate('AddQuestionSet',
-                            {
-                                questionsetlist: patient.question_set,
-                                isAdding: false,
-                                id: id,
-                                doctorToken: doctorToken
-                            })}>
-                            <Text>Delete Question Set</Text>
-                        </Button>
-                    </View>
+                    {/*<View style={buttonListStyle}>*/}
+                        {/*<Button block*/}
+                                {/*info*/}
+                                {/*style={buttonStyle}*/}
+                                {/*onPress={this.getTmpToken.bind(this)}*/}
+                                {/*title="Register Phone">*/}
+                            {/*<Text>Register Patient</Text>*/}
+                        {/*</Button>*/}
+                        {/*<Button block*/}
+                                {/*success*/}
+                                {/*style={buttonStyle}*/}
+                                {/*onPress={this.getQuestionSetList.bind(this)}*/}
+                                {/*title="Add Question Set">*/}
+                            {/*<Text>Add Question Set</Text>*/}
+                        {/*</Button>*/}
+                    {/*</View>*/}
+
+                    {/*<View style={buttonListStyle}>*/}
+                        {/*<Button block*/}
+                                {/*warning*/}
+                                {/*style={buttonStyle}*/}
+                                {/*title="Make Patient Assessment"*/}
+                                {/*onPress={() =>*/}
+                                {/*this.props.navigation.navigate('PrivateQuestion',*/}
+                                {/*{*/}
+                                    {/*doctorToken: doctorToken*/}
+                                {/*})}>*/}
+                            {/*<Text>Make Patient Assessment</Text>*/}
+                        {/*</Button>*/}
+                        {/*<Button block danger style={buttonStyle} onPress={() =>*/}
+                            {/*this.props.navigation.navigate('AddQuestionSet',*/}
+                            {/*{*/}
+                                {/*questionsetlist: patient.question_set,*/}
+                                {/*isAdding: false,*/}
+                                {/*id: id,*/}
+                                {/*doctorToken: doctorToken*/}
+                            {/*})}>*/}
+                            {/*<Text>Delete Question Set</Text>*/}
+                        {/*</Button>*/}
+                    {/*</View>*/}
                 </Content>
             </Container>
         );

@@ -6,6 +6,11 @@ import Dimensions from 'Dimensions';
 
 class QRCodePage extends Component {
 
+    static navigationOptions = {
+        title: "",
+        gesturesEnabled: false
+    };
+
     render(){
         const { viewStyle, messageContent, messageBox, messageBoxText } = styles;
         const data = {

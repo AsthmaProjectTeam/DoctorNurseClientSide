@@ -8,7 +8,8 @@ import Toast from 'react-native-simple-toast';
 
 class PrivateQuestionPage extends Component{
     static navigationOptions = {
-        title: "Private Questions"
+        title: "Private Questions",
+        gesturesEnabled: false
     };
 
     componentWillMount(){

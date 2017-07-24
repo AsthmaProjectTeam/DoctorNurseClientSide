@@ -29,7 +29,8 @@ import { HOST } from '../../CONST';
 class SearchPatient extends Component {
 
     static navigationOptions = {
-        header: null
+        header: null,
+        gesturesEnabled: false
     };
 
     // Handles errors with server fetch calls
@@ -164,7 +165,8 @@ class SearchPatient extends Component {
             )
         }
         return(
-            <Button info title={null}
+            <Button info
+                    block title={null}
                     onPress={this.onSearchPressed.bind(this)}
                     style={styles.buttonStyle}>
                 <Text>Search</Text>
@@ -175,11 +177,11 @@ class SearchPatient extends Component {
     renderOptionButtons(){
         return (
             <Content style={{height:270}}>
-                <Button success style={{width: Dimensions.get('window').width*0.8, alignSelf: 'center'}} title={null} onPress={this.onAddManuallyPressed.bind(this)}>
+                <Button block success style={{width: Dimensions.get('window').width*0.8, alignSelf: 'center'}} title={null} onPress={this.onAddManuallyPressed.bind(this)}>
                     <Text style={{textAlign: 'center'}}>Add Manually</Text>
                 </Button>
                 <Text style={{textAlign:'center',color:'dodgerblue',paddingBottom:5}}>or</Text>
-                <Button success style={styles.buttonStyle} title={null} onPress={this.onSearchAgainPressed.bind(this)}>
+                <Button block success style={styles.buttonStyle} title={null} onPress={this.onSearchAgainPressed.bind(this)}>
                     <Text style={{textAlign:'center'}}>Search Again</Text>
                 </Button>
             </Content>

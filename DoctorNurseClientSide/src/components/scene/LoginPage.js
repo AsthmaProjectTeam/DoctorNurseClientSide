@@ -9,7 +9,8 @@ class LoginPage extends Component {
     uriSource = 'https://s-media-cache-ak0.pinimg.com/236x/d3/66/78/d36678c183f27a176e8790390f94dcba--ppt-template-templates.jpg';
 
     static navigationOptions = {
-        header: null
+        header: null,
+        gesturesEnabled: false
     };
 
     // Handles errors for server calls

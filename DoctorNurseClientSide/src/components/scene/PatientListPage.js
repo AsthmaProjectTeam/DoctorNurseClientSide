@@ -33,7 +33,8 @@ class PatientListPage extends Component {
     navigate = this.props.navigation.navigate;
 
     static navigationOptions = {
-        header: null
+        header: null,
+        gesturesEnabled: false
     };
 
     // Handles errors with server fetch calls

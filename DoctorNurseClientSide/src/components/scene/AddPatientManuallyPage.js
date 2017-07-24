@@ -27,7 +27,8 @@ class AddManually extends Component {
 
     static navigationOptions = {
         headerTitle: 'Add Patient',
-        headerBackTitle: "Results"  // This does not show...
+        headerBackTitle: "Results",  // This does not show...
+        gesturesEnabled: false
     };
 
     // Fixes bug: error is displayed when returning to 'AddPatientPage'
@@ -169,7 +170,7 @@ class AddManually extends Component {
 
                     <Text style={styles.errorTextStyle}>{this.props.error}</Text>
 
-                    <Button success title={null}
+                    <Button success block title={null}
                             onPress={this.onConfirmPressed.bind(this)}
                             style={styles.buttonStyle}>
                         <Text>Confirm</Text>

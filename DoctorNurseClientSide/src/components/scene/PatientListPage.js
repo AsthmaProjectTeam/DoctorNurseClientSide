@@ -23,12 +23,11 @@ import {
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
 
-// BUGS: - Newly added patients do not originally render in PatientList
 
 class PatientListPage extends Component {
 
     // Component constants
-    doctorToken = this.props.navigation.state.params.doctorToken; // long-term initiator token
+    doctorToken = this.props.doctorToken; // long-term initiator token
     dispatch = this.props.dispatch;
     navigate = this.props.navigation.navigate;
 
@@ -77,15 +76,15 @@ class PatientListPage extends Component {
 
     // Log Out initiator and wipe stored long-term token
     onLogOutPress() {
-        AsyncStorage.setItem("loginToken", "")
+        AsyncStorage.removeItem("loginToken")
             .then(() => {
                 this.dispatch({
                     type: 'logoutSuccess'
                 })
             })
             .then(() => {
-                this.navigate('Login');
-            })
+                this.props.navigation.goBack();
+            });
             //.catch... here will be handle errors function for AsyncStorage calls
     }
 
@@ -167,11 +166,11 @@ class PatientListPage extends Component {
                     <Title>Patients</Title>
                 </Body>
                 <Right>
-                    <Button transparent title={null}
-                            onPress={() => this.navigate(
-                                'SearchPatient', { doctorToken: this.doctorToken })}>
-                        <Text>Add</Text>
-                    </Button>
+                    {/*<Button transparent title={null}*/}
+                            {/*onPress={() => this.navigate(*/}
+                                {/*'SearchPatient', { doctorToken: this.doctorToken })}>*/}
+                        {/*<Text>Add</Text>*/}
+                    {/*</Button>*/}
                 </Right>
             </Header>
         )
@@ -192,8 +191,7 @@ class PatientListPage extends Component {
                           renderRow={(patient) =>
                               <ListItem button
                                         onPress={() =>
-                                        {this.navigate('PatientDetail', { id: patient._id,
-                                                        doctorToken: this.doctorToken });
+                                        {this.navigate('PatientDetail', { id: patient._id });
                                                         this.dispatch({ type: 'searchComplete'})}}>
                                   <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
                                   <Right>
@@ -281,7 +279,8 @@ const mapStateToProps = state => {
         loadError: state.patients.loadError,
         userIsSearching: state.patients.userIsSearching,
         searchResults: state.patients.searchResults,
-        searchError: state.patients.searchError
+        searchError: state.patients.searchError,
+        doctorToken: state.login.doctorToken
     };
 };
 

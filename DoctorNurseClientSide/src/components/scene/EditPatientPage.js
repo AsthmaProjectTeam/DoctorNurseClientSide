@@ -19,8 +19,11 @@ import {
     Icon,
     Title
 } from 'native-base';
+import Toast from 'react-native-simple-toast';
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
+
+// Unedited patient info passed as prop as 'patientInfo'
 
 class EditPatient extends Component {
 
@@ -75,14 +78,14 @@ class EditPatient extends Component {
         this.props.dispatch({
             type: 'cancelPressed'
         });
-        this.navigateToDetail();
+        this.props.navigation.goBack();
     }
 
     // Attempts to update patient's profile according to initiator input
     onSavePressed() {
         const dispatch = this.props.dispatch;
         const id = this.props.navigation.state.params.patientInfo._id;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const doctorToken = this.props.doctorToken;
         fetch(HOST+`/v2/initiators/patients/${id}/profile`,{
             method: 'PATCH',
             headers: {
@@ -98,26 +101,16 @@ class EditPatient extends Component {
             })
         })
             .then(this.handleErrors)
-            .then(
-                dispatch({
-                    type: 'saveSuccess'
-                })
-            )
-            .then(this.navigateToDetail())
+            .then(Toast.show(`Successfully Edited ${this.props.firstName} ${this.props.lastName}!`, Toast.LONG))
+            .then(setTimeout(
+                () => { dispatch({ type: 'saveSuccess' });
+                    this.props.navigation.goBack();
+                }, 2000))
             .catch(() => {
                 dispatch({
                     type: 'saveFail'
                 })
             })
-    }
-
-    navigateToDetail () {
-        const patientInfo = this.props.navigation.state.params.patientInfo;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
-        this.props.navigation.navigate('PatientDetail', {
-            id: patientInfo._id,
-            doctorToken: doctorToken
-        })
     }
 
     // Removes time of day from date of birth timestamp
@@ -229,7 +222,8 @@ const mapStateToProps = state => {
         firstName: state.editPatient.firstName,
         lastName: state.editPatient.lastName,
         dateOfBirth: state.editPatient.dateOfBirth,
-        error: state.editPatient.error
+        error: state.editPatient.error,
+        doctorToken: state.login.doctorToken
     };
 };
 

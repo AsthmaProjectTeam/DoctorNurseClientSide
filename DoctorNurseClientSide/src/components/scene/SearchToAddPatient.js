@@ -59,17 +59,16 @@ class SearchPatient extends Component {
         this.props.dispatch({
             type: 'cancelPressed'
         });
-        this.props.navigation.navigate('PatientList', {doctorToken: this.props.navigation.state.params.doctorToken});
+        this.props.navigation.goBack();
     };
 
     onSearchPressed() {
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const doctorToken = this.props.doctorToken;
         const dispatch = this.props.dispatch;
         if (this.props.firstName.length === 0 && this.props.lastName.length === 0) {
             dispatch({
                 type: 'searchPressedWithBlankFields'
             });
-            console.log("Error should be displaying")
         }
         else {
             dispatch({
@@ -103,9 +102,8 @@ class SearchPatient extends Component {
     }
 
     onAddPressed(patient) {
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const doctorToken = this.props.doctorToken;
         const dispatch = this.props.dispatch;
-        const navigate = this.props.navigation.navigate;
         const id = patient._id;
         fetch(HOST + "/v2/initiators/patients/add",{
             method: 'PATCH',
@@ -122,7 +120,7 @@ class SearchPatient extends Component {
             .then(Toast.show(`Successfully Added ${patient.first_name} ${patient.last_name}!`, Toast.LONG))
             .then(setTimeout(
                 () => { dispatch({ type: 'addPatientSuccess' });
-                        navigate('PatientList', {doctorToken: doctorToken });
+                        this.props.navigation.goBack();
                       }, 2000))
             .catch(() => dispatch({
                 type: 'addPatientFailed'
@@ -344,7 +342,8 @@ const mapStateToProps = state => {
         firstName: state.searchToAdd.firstName,
         lastName: state.searchToAdd.lastName,
         searchError: state.searchToAdd.searchError,
-        isLoading: state.searchToAdd.isLoading
+        isLoading: state.searchToAdd.isLoading,
+        doctorToken: state.login.doctorToken
     };
 };
 

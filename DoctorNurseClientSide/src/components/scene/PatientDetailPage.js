@@ -21,7 +21,7 @@ import Dimensions from 'Dimensions';
 import { connect } from 'react-redux';
 import { HOST } from '../../CONST';
 
-
+// inherits patient id prop as 'id'
 
 class PatientDetailPage extends Component {
 
@@ -32,9 +32,8 @@ class PatientDetailPage extends Component {
 
     // Attempts to gather patient's profile
     componentWillMount() {
-        //console.log('patient detail page componentwillmount run');
         const id = this.props.navigation.state.params.id;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const doctorToken = this.props.doctorToken;
         const dispatch = this.props.dispatch;
         const navigate = this.props.navigation.navigate;
         fetch(HOST+'/v2/initiators/profile',{
@@ -76,8 +75,8 @@ class PatientDetailPage extends Component {
     // Produces temporary token for patient registration
     getTmpToken(){
         const dispatch = this.props.dispatch;
-        const id = this.props.navigation.state.params.id;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const id = this.props.patient._id;
+        const doctorToken = this.props.doctorToken;
         const navigate = this.props.navigation.navigate;
         fetch(HOST+`/v2/accounts/patients/${id}/register/temp-token`, {
             method: 'GET',
@@ -116,8 +115,8 @@ class PatientDetailPage extends Component {
     // Retrieves patient's currently-assigned question list
     getQuestionSetList(){
         const question_set = this.props.patient.question_set;
-        const id = this.props.navigation.state.params.id;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const id = this.props.patient._id;
+        const doctorToken = this.props.doctorToken;
         const navigate = this.props.navigation.navigate;
         fetch(HOST+'/v2/admin/question-set', {
             method: 'GET',
@@ -168,8 +167,8 @@ class PatientDetailPage extends Component {
     }
 
     render() {
-        const id = this.props.navigation.state.params.id;
-        const doctorToken = this.props.navigation.state.params.doctorToken;
+        const id = this.props.patient._id;
+        const doctorToken = this.props.doctorToken;
         const navigate = this.props.navigation.navigate;
         const patient = this.props.patient;
 
@@ -181,8 +180,7 @@ class PatientDetailPage extends Component {
                     <Header>
                         <Left>
                             <Button transparent title={null}
-                                    onPress={() => navigate('PatientList',
-                                        {doctorToken: doctorToken})}>
+                                    onPress={() => this.props.navigation.goBack()}>
                                 <Icon name='arrow-back' />
                                 <Text>Patients</Text>
                             </Button>
@@ -195,24 +193,18 @@ class PatientDetailPage extends Component {
                     </Header>
                     <Card style={cardStyle}>
                         <CardItem>
-                            <Left>
+                            <Body>
                                 <Thumbnail square
-                                           large
                                            source={require('../../img/silhouette.jpg')}
                                            style={styles.thumbnailStyle}/>
-                                <Body>
-                                </Body>
-                            </Left>
-                            <Button block
-                                    warning
-                                    style={{marginTop: 10}}
-                                    onPress={() => navigate('EditPatient',
-                                        {
-                                            patientInfo: patient,
-                                            doctorToken: doctorToken
-                                        })}>
-                                <Text>Edit</Text>
-                            </Button>
+                            </Body>
+                            {/*<Button block*/}
+                                    {/*warning*/}
+                                    {/*style={{marginTop: 10}}*/}
+                                    {/*onPress={() => navigate('EditPatient',*/}
+                                        {/*{ patientInfo: patient })}>*/}
+                                {/*<Text>Edit</Text>*/}
+                            {/*</Button>*/}
                         </CardItem>
                         <CardItem>
                             <Body>
@@ -295,8 +287,9 @@ const styles = {
     cardStyle: {
         marginTop: 15,
         alignSelf: 'center',
+        height: 400,
         width: Dimensions.get('window').width*0.9,
-        backgroundColor: '#ddd',
+        backgroundColor: 'white',
         borderRadius: 5
     },
 
@@ -316,8 +309,12 @@ const styles = {
     },
 
     thumbnailStyle: {
+        alignSelf: 'center',
+        width: 105,
+        height: 105,
         marginTop: 10,
-        marginLeft: 10
+        marginLeft: 10,
+        marginBottom: 40
     }
 };
 
@@ -327,7 +324,8 @@ const mapStateToProps = state => {
         questionsetlist: state.singlepatient.questionsetlist,
         patient: state.singlepatient.patient,
         loading: state.singlepatient.loading,
-        isAdding: state.singlepatient.isAdding
+        isAdding: state.singlepatient.isAdding,
+        doctorToken: state.login.doctorToken
     };
 };
 

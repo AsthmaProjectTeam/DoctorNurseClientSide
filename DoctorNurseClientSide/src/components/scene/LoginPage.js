@@ -1,17 +1,40 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage, View } from 'react-native';
 import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text, Spinner } from 'native-base';
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
+import Entrance from './Entrance';
 
 class LoginPage extends Component {
-    uriSource = 'https://s-media-cache-ak0.pinimg.com/236x/d3/66/78/d36678c183f27a176e8790390f94dcba--ppt-template-templates.jpg';
 
     static navigationOptions = {
         header: null,
         gesturesEnabled: false
     };
+
+    componentWillMount(){
+        const dispatch = this.props.dispatch;
+        const navigate = this.props.navigation.navigate;
+
+        AsyncStorage.getItem('loginToken')
+            .then(
+                function (result) {
+                    if (result !== null && result !== "") {
+                        console.log("access to saved data, be ready to patient list page");
+                        setTimeout(() => {
+                            dispatch({
+                                type: 'tokenFound',
+                                payload: result
+                            });
+                            navigate('PatientList');
+                        }, 2500);
+                    }
+                })
+            .catch((error) => {
+                console.log('error:' + error.message);
+            });
+    }
 
     // Handles errors for server calls
     handleErrors(response) {
@@ -62,10 +85,11 @@ class LoginPage extends Component {
                 AsyncStorage.setItem("loginToken", response.token)
                     .then(
                         dispatch({
-                            type:'loginSuccess'
+                            type:'loginSuccess',
+                            payload: response.token  // doctorToken saved in redux store as 'state.login.doctorToken'
                         })
                     )
-                    .then(() => navigate('PatientList', {doctorToken: response.token}))
+                    .then(() => navigate('PatientList'))
             })
             .catch(() => {
                 dispatch({
@@ -91,14 +115,31 @@ class LoginPage extends Component {
         )
     }
 
+    _hideEntrance() {
+        this.props.dispatch({
+            type: 'hideAnimation',
+            payload: {
+                show: false
+            }
+        })
+    }
+
     render() {
+        if (this.props.show) {
+            return (
+                <View>
+                    <Entrance hideThis={()=> this._hideEntrance()}/>
+                </View>
+            )
+        }
+
         const { containerStyle, logoStyle, formStyle, errorStyle } = styles;
         return(
             <Container style={containerStyle}>
                 <Content>
                     <Thumbnail style={logoStyle}
                                square
-                               source={{uri: this.uriSource }} />
+                               source={require('../../img/loginCaduceus.jpg')} />
 
                     <Form style={formStyle}>
                         <Item floatingLabel>
@@ -167,7 +208,10 @@ const mapStateToProps = state => {
         password: state.login.password,
         error: state.login.error,
         isLoggedIn: state.login.isLoggedIn,
-        isLoading: state.login.isLoading
+        isLoading: state.login.isLoading,
+        doctorToken: state.login.doctorToken,
+        tokenFoundAtEntrance: state.login.tokenFoundAtEntrance,
+        show: state.entrance.show
     };
 };
 

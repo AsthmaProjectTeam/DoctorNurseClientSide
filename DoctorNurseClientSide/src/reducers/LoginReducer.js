@@ -1,9 +1,11 @@
 const INITIAL_STATE = {
     isLoggedIn: false,
-    username: null,
-    password: null,
+    username: "",
+    password: "",
     error: null,
-    isLoading: false
+    isLoading: false,
+    doctorToken: null,
+    tokenFoundAtEntrance: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -15,11 +17,21 @@ export default (state = INITIAL_STATE, action) => {
         case 'loginStarted':
             return { ...state, error: null, isLoading: true };
         case 'loginSuccess':
-            return { ...state, isLoggedIn: true };
+            return { ...state, isLoggedIn: true, doctorToken: action.payload };
         case 'loginFail':
-            return { ...state, isLoading: false, password: null, error:'Invalid Username or Password.' };
+            return { ...state, isLoading: false, password: "", error:'Invalid Username or Password.' };
         case 'logoutSuccess':
-            return { ...INITIAL_STATE };
+            return { ...state,
+                     isLoggedIn: false,
+                     error: null,
+                     isLoading: false,
+                     doctorToken: null,
+                     tokenFoundAtEntrance: false };
+        case 'tokenFound':
+            return { ...state,
+                     isLoggedIn: true,
+                     doctorToken: action.payload,
+                     tokenFoundAtEntrance: true };
         default:
             return state;
     }

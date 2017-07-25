@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import QRCode from 'react-native-qrcode';
 import { connect } from 'react-redux';
 import Dimensions from 'Dimensions';
+import { Header, Left, Right, Title, Button, Icon, Body, Text } from 'native-base';
 
 class QRCodePage extends Component {
 
     static navigationOptions = {
-        title: "",
+        header: null,
         gesturesEnabled: false
     };
 
@@ -18,6 +19,20 @@ class QRCodePage extends Component {
         };
         return(
             <View>
+                <Header>
+                    <Left>
+                        <Button transparent title={null}
+                                onPress={() => this.props.navigation.goBack()}>
+                            <Icon name='arrow-back' />
+                            <Text>Back</Text>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Register</Title>
+                    </Body>
+                    <Right>
+                    </Right>
+                </Header>
                 <View style={messageContent}>
                     <View style={messageBox}>
                         <View>

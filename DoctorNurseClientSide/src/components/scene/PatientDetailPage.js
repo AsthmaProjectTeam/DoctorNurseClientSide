@@ -213,7 +213,7 @@ class PatientDetailPage extends Component {
                                 <Text style={listStyle}>Last Name: {patient.last_name}</Text>
                                 <Text style={listStyle}>Date of Birth: {this.sliceDoB(patient.date_of_birth)}</Text>
                                 {/*<Text style={listStyle}>Question Sets:</Text>*/}
-                                {/*<ScrollView style={{height: 45, marginLeft: 15, marginBottom: 10}}>*/}
+                                {/*<ScrollView style={{height: Dimensions.get('window').height*0.067, marginLeft: 15, marginBottom: 10}}>*/}
                                     {/*{patient.question_set?patient.question_set.map((qset) => {*/}
                                             {/*return(*/}
                                                 {/*<Text note*/}
@@ -287,7 +287,7 @@ const styles = {
     cardStyle: {
         marginTop: Dimensions.get('window').height*0.022,
         alignSelf: 'center',
-        height: Dimensions.get('window').height*0.6,
+        height: Dimensions.get('window').height*0.65,
         width: Dimensions.get('window').width*0.9,
         backgroundColor: 'white',
         borderRadius: 5
@@ -314,7 +314,7 @@ const styles = {
         height: Dimensions.get('window').width*0.28,
         marginTop: 10,
         marginLeft: 10,
-        marginBottom: Dimensions.get('window').height*0.06
+        marginBottom: Dimensions.get('window').height*0.06 //0.06
     }
 };
 

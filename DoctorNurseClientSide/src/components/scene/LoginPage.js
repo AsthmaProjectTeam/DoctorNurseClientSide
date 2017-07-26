@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { AsyncStorage, View } from 'react-native';
-import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text, Spinner } from 'native-base';
+import { Container, Content, Thumbnail, Button, Form, Item, Input, Label, Text, Spinner, Card } from 'native-base';
 import Dimensions from 'Dimensions';
 import { HOST } from '../../CONST';
 import Entrance from './Entrance';
@@ -133,39 +133,41 @@ class LoginPage extends Component {
             )
         }
 
-        const { containerStyle, logoStyle, formStyle, errorStyle } = styles;
+        const { containerStyle, logoStyle, formStyle, errorStyle, cardStyle } = styles;
         return(
             <Container style={containerStyle}>
-                <Content>
-                    <Thumbnail style={logoStyle}
-                               square
-                               source={require('../../img/loginCaduceus.jpg')} />
+                <Card style={cardStyle}>
+                    <Content>
+                        <Thumbnail style={logoStyle}
+                                   square
+                                   source={require('../../img/loginCaduceus.jpg')} />
 
-                    <Form style={formStyle}>
-                        <Item floatingLabel>
-                            <Label>Username</Label>
-                            <Input
-                                autoCapitalize='none'
-                                autoCorrect={false}
-                                onChangeText={(text) => this.onChangeUsername(text)}
-                            />
-                        </Item>
-                        <Item floatingLabel last>
-                            <Label>Password</Label>
-                            <Input
-                                secureTextEntry={true}
-                                autoCorrect={false}
-                                onChangeText={(text) => this.onChangePassword(text)}
-                            />
-                        </Item>
-                    </Form>
+                        <Form style={formStyle}>
+                            <Item floatingLabel>
+                                <Label>Username</Label>
+                                <Input
+                                    autoCapitalize='none'
+                                    autoCorrect={false}
+                                    onChangeText={(text) => this.onChangeUsername(text)}
+                                />
+                            </Item>
+                            <Item floatingLabel last>
+                                <Label>Password</Label>
+                                <Input
+                                    secureTextEntry={true}
+                                    autoCorrect={false}
+                                    onChangeText={(text) => this.onChangePassword(text)}
+                                />
+                            </Item>
+                        </Form>
 
-                    <Text style={errorStyle}>
-                        {this.props.error}
-                    </Text>
+                        <Text style={errorStyle}>
+                            {this.props.error}
+                        </Text>
 
-                    {this.renderButton()}
-                </Content>
+                        {this.renderButton()}
+                    </Content>
+                </Card>
             </Container>
         );
     }
@@ -173,29 +175,36 @@ class LoginPage extends Component {
 
 const styles = {
     containerStyle: {
-        backgroundColor: "white"
+        backgroundColor: '#4dae4a'
     },
-
+    cardStyle: {
+        height: Dimensions.get('window').height*0.9,
+        width: Dimensions.get('window').width*0.95,
+        marginTop: 20,
+        alignSelf: 'center',
+        borderBottomWidth: 4,
+        opacity: 3,
+        borderWidth: 2,
+        borderRadius: 3,
+        borderColor: '#2f4f4f'
+    },
     formStyle: {
         width: Dimensions.get('window').width*0.8,
         alignSelf: 'center'
     },
-
     logoStyle: {
-        marginTop: 70,
+        marginTop: Dimensions.get('window').height/8,
         width: Dimensions.get('window').width/2,
-        height: 236,
+        height: Dimensions.get('window').width/1.6,
         alignSelf: 'center'
     },
-
     buttonStyle: {
-        marginTop: 35,
+        marginTop: Dimensions.get('window').height*0.05,
         width: Dimensions.get('window').width*0.8,
         alignSelf: 'center'
     },
-
     errorStyle: {
-        fontSize: 20,
+        fontSize: Dimensions.get('window').height*0.027,
         alignSelf: 'center',
         color: 'red',
         marginTop: 10

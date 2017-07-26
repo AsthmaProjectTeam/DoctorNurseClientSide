@@ -231,7 +231,7 @@ class PatientDetailPage extends Component {
 
                     <Button block info style={{width: Dimensions.get('window').width*0.8,
                                                alignSelf: 'center',
-                                               margin: 15, height: 60}}
+                                               margin: 15, height: Dimensions.get('window').height*0.09}}
                             onPress={this.getTmpToken.bind(this)}
                             title={null}>
                         <Text>Register Patient</Text>
@@ -285,9 +285,9 @@ class PatientDetailPage extends Component {
 
 const styles = {
     cardStyle: {
-        marginTop: 15,
+        marginTop: Dimensions.get('window').height*0.022,
         alignSelf: 'center',
-        height: 400,
+        height: Dimensions.get('window').height*0.6,
         width: Dimensions.get('window').width*0.9,
         backgroundColor: 'white',
         borderRadius: 5
@@ -310,11 +310,11 @@ const styles = {
 
     thumbnailStyle: {
         alignSelf: 'center',
-        width: 105,
-        height: 105,
+        width: Dimensions.get('window').width*0.28,
+        height: Dimensions.get('window').width*0.28,
         marginTop: 10,
         marginLeft: 10,
-        marginBottom: 40
+        marginBottom: Dimensions.get('window').height*0.06
     }
 };
 

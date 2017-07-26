@@ -45,7 +45,7 @@ class QRCodePage extends Component {
                         this.props.tmptoken?
                         <QRCode
                             value={JSON.stringify(data) }
-                            size={200}
+                            size={Dimensions.get('window').width*0.53}
                             bgColor='#804000'
                             fgColor='white'
                         />:<Text>Loading...</Text>
@@ -71,18 +71,18 @@ const styles = {
     },
     messageBox:{
         backgroundColor:'#ffb366',
-        width:300,
+        width: Dimensions.get('window').width*0.8,
         paddingTop:10,
-        paddingBottom:20,
-        paddingLeft:20,
-        paddingRight:20,
+        paddingBottom:Dimensions.get('window').height*0.03,
+        paddingLeft:Dimensions.get('window').height*0.03,
+        paddingRight:Dimensions.get('window').height*0.03,
         borderRadius:10
     },
     messageBoxText:{
         fontWeight:'bold',
         color:'#fff',
         textAlign:'center',
-        fontSize:16
+        fontSize: Dimensions.get('window').height*0.024
     },
 };
 

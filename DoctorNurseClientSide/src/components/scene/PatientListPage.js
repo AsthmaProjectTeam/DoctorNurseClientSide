@@ -204,13 +204,14 @@ class PatientListPage extends Component {
             )
         }
         return (  // Renders all patients under initiator
-            <Card>
-                <View style={{height: 550}}>
-                    <List dataArray={this.props.patientsList}
+            <Card style={{ marginTop: Dimensions.get('window').height*0.01, height: Dimensions.get('window').height*0.82}}>
+                <View style={{height: Dimensions.get('window').height*0.82}}>
+                    <List style={styles.listStyle}
+                          dataArray={this.props.patientsList}
                           renderRow={(patient) =>
                               <ListItem button
                                         onPress={() => this.navigate('PatientDetail',
-                                            { id: patient._id, doctorToken: this.doctorToken })}>
+                                            { id: patient._id })}>
                                   <Text>{this.checkNameLength(patient.first_name)} {this.checkNameLength(patient.last_name)}</Text>
                                   <Right>
                                     <Text>{this.sliceDoB(patient.date_of_birth)}</Text>
@@ -262,6 +263,9 @@ class PatientListPage extends Component {
 }
 
 const styles = {
+    textStyle: {
+      fontColor: ''
+    },
     containerStyle: {
         backgroundColor: 'white'
     },
@@ -269,7 +273,12 @@ const styles = {
         marginTop: 10,
         width: Dimensions.get('window').width*0.8,
         alignSelf: 'center'
+    },
+    listStyle: {
+        width: Dimensions.get('window').width*0.98,
+        alignSelf: 'center',
     }
+
 };
 
 const mapStateToProps = state => {
